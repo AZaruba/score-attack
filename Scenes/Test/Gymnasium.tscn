@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://crspaphln01qm"]
+
+[ext_resource type="PackedScene" uid="uid://cd754orfosqi5" path="res://Assets/3D/Environments/Gymnasium.blend" id="1_glw3c"]
+[ext_resource type="PackedScene" uid="uid://cbf1njosplfhw" path="res://Nodes/Characters/PlayerCharacter/PlayerCharacter.tscn" id="2_okpsg"]
+
+[sub_resource type="Environment" id="Environment_okpsg"]
+background_mode = 2
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+
+[node name="GameRoot" type="Node3D" unique_id=572831494]
+
+[node name="Gymnasium" parent="." unique_id=1740419061 instance=ExtResource("1_glw3c")]
+
+[node name="PlayerCharacter" parent="." unique_id=73598226 instance=ExtResource("2_okpsg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Camera3D" type="Camera3D" parent="PlayerCharacter" unique_id=841458516]
+transform = Transform3D(0.7071068, 0.12278781, -0.6963643, 0, 0.9848078, 0.1736482, 0.7071068, -0.12278781, 0.6963643, -6, 5, 6)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=753730496]
+environment = SubResource("Environment_okpsg")

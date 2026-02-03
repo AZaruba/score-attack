@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://cbf1njosplfhw"]
+
+[ext_resource type="Script" uid="uid://dhqefdtlbl05a" path="res://Nodes/Characters/PlayerCharacter/PlayerCharacterController.cs" id="1_lm4g0"]
+[ext_resource type="PackedScene" uid="uid://d4dkncghbvbdm" path="res://Nodes/Components/Input/InputComponent.tscn" id="2_cyn0b"]
+[ext_resource type="Resource" uid="uid://dftagp3ken18v" path="res://Resources/CharacterStats/PlayerCharacterStats.tres" id="2_wfsgo"]
+[ext_resource type="PackedScene" uid="uid://cs8ovhje8kw8m" path="res://Nodes/Components/Velocity/VelocityComponent.tscn" id="3_wfsgo"]
+[ext_resource type="PackedScene" uid="uid://cp6uncd35dj4c" path="res://Nodes/Components/Gravity/GravityComponent.tscn" id="5_5hgvc"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lc4lg"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lm4g0"]
+
+[node name="PlayerCharacter" type="CharacterBody3D" unique_id=73598226 node_paths=PackedStringArray("InputComponent", "VelocityComponent", "GravityComponent")]
+physics_interpolation_mode = 1
+floor_constant_speed = true
+script = ExtResource("1_lm4g0")
+InputComponent = NodePath("InputComponent")
+VelocityComponent = NodePath("VelocityComponent")
+GravityComponent = NodePath("GravityComponent")
+Stats = ExtResource("2_wfsgo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=933859463]
+shape = SubResource("CapsuleShape3D_lc4lg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1287485598]
+mesh = SubResource("CapsuleMesh_lm4g0")
+
+[node name="InputComponent" parent="." unique_id=1528721609 instance=ExtResource("2_cyn0b")]
+
+[node name="VelocityComponent" parent="." unique_id=600546887 instance=ExtResource("3_wfsgo")]
+
+[node name="GravityComponent" parent="." unique_id=1863881258 instance=ExtResource("5_5hgvc")]
+Gravity = 9.8
