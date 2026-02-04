@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://crspaphln01qm"]
 
-[ext_resource type="PackedScene" uid="uid://cd754orfosqi5" path="res://Assets/3D/Environments/Gymnasium.blend" id="1_glw3c"]
 [ext_resource type="PackedScene" uid="uid://cbf1njosplfhw" path="res://Nodes/Characters/PlayerCharacter/PlayerCharacter.tscn" id="2_okpsg"]
+[ext_resource type="PackedScene" uid="uid://dv2rtd025ghcj" path="res://Nodes/Camera/CharacterCamera.tscn" id="3_6mydh"]
+[ext_resource type="PackedScene" uid="uid://cifntbeeljetl" path="res://Assets/3D/Environments/Gymnasium.tscn" id="3_kf4nt"]
+[ext_resource type="PackedScene" uid="uid://cn5fv7hjalxcn" path="res://Nodes/Characters/Enemies/Goon/Goon.tscn" id="4_kf4nt"]
 
 [sub_resource type="Environment" id="Environment_okpsg"]
 background_mode = 2
@@ -9,14 +11,20 @@ ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 
 [node name="GameRoot" type="Node3D" unique_id=572831494]
-
-[node name="Gymnasium" parent="." unique_id=1740419061 instance=ExtResource("1_glw3c")]
+physics_interpolation_mode = 1
 
 [node name="PlayerCharacter" parent="." unique_id=73598226 instance=ExtResource("2_okpsg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="Camera3D" type="Camera3D" parent="PlayerCharacter" unique_id=841458516]
-transform = Transform3D(0.7071068, 0.12278781, -0.6963643, 0, 0.9848078, 0.1736482, 0.7071068, -0.12278781, 0.6963643, -6, 5, 6)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=753730496]
 environment = SubResource("Environment_okpsg")
+
+[node name="CharacterCamera" parent="." unique_id=1180286763 node_paths=PackedStringArray("Target") instance=ExtResource("3_6mydh")]
+transform = Transform3D(0.70710677, 0.12278781, -0.6963642, 0, 0.9848077, 0.1736482, 0.70710677, -0.12278781, 0.6963642, -6, 6, 6)
+fov = 65.0
+Target = NodePath("../PlayerCharacter")
+
+[node name="Gym" parent="." unique_id=442243274 instance=ExtResource("3_kf4nt")]
+
+[node name="Goon" parent="." unique_id=1804750191 instance=ExtResource("4_kf4nt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 5, -12)

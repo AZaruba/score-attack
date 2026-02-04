@@ -15,10 +15,15 @@ public partial class GravityComponent : Node
   public override void _PhysicsProcess(double delta)
   {
   }
-
-  public void SetGravity(Vector3 Input)
+  
+  public void AddGravity(float GravityForce, bool IsOnFloor)
   {
-    CurrentVerticalVelocity = Input;
+    Vector3 Result = Vector3.Zero;
+    if (!IsOnFloor)
+    {
+      Result = CurrentVerticalVelocity + Vector3.Down * GravityForce;
+    }
+    CurrentVerticalVelocity = Result;
   }
 
   public void ApplyVerticalForce(float Value)

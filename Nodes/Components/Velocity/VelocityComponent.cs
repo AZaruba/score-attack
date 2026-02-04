@@ -10,7 +10,7 @@ public partial class VelocityComponent : Node
     CurrentVelocity = Vector3.Zero;
   }
 
-  public override void _Process(double delta)
+  public override void _PhysicsProcess(double delta)
   {
     // stub
   }
@@ -20,9 +20,22 @@ public partial class VelocityComponent : Node
     CurrentVelocity += Input;
   }
 
+  public void AddFrictionForce(Vector3 Input, bool IsOnFloor)
+  {
+    if (IsOnFloor)
+    {
+      CurrentVelocity += Input;
+    }
+  }
+
   public void SetVelocity(Vector3 Input)
   {
     CurrentVelocity = Input;
+  }
+
+  public void CapVelocity(float Cap)
+  {
+    CurrentVelocity = CurrentVelocity.LimitLength(Cap);
   }
 
   public Vector3 GetCurrentVelocity() { return CurrentVelocity; }

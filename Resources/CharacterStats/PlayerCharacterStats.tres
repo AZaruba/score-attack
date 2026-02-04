@@ -4,6 +4,9 @@
 
 [resource]
 script = ExtResource("1_qbcwl")
-MoveSpeed = 5.0
-JumpForce = 10.0
-Gravity = -9.8
+MoveSpeed = 6.0
+MoveAcceleration = 2.0
+RotationRate = 90.0
+JumpForce = 15.0
+Gravity = 40.0
+GroundFriction = 10.0

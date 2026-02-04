@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://cn5fv7hjalxcn"]
+
+[ext_resource type="Script" uid="uid://ci1u1lyl1ut34" path="res://Nodes/Characters/Enemies/Goon/Goon.cs" id="1_s5nfe"]
+[ext_resource type="Resource" uid="uid://c53odamcx4ief" path="res://Resources/CharacterStats/Enemies/GoonStats.tres" id="2_1wx2c"]
+[ext_resource type="PackedScene" uid="uid://cs8ovhje8kw8m" path="res://Nodes/Components/Velocity/VelocityComponent.tscn" id="2_tw5n5"]
+[ext_resource type="PackedScene" uid="uid://cp6uncd35dj4c" path="res://Nodes/Components/Gravity/GravityComponent.tscn" id="3_1wx2c"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0o1r4"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tw5n5"]
+material = SubResource("StandardMaterial3D_0o1r4")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1wx2c"]
+
+[node name="Goon" type="CharacterBody3D" unique_id=1804750191 node_paths=PackedStringArray("NavigationAgent", "VelocityComponent", "GravityComponent")]
+script = ExtResource("1_s5nfe")
+NavigationAgent = NodePath("NavigationAgent3D")
+VelocityComponent = NodePath("VelocityComponent")
+GravityComponent = NodePath("GravityComponent")
+Stats = ExtResource("2_1wx2c")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=473046625]
+target_desired_distance = 2.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1484892767]
+mesh = SubResource("CapsuleMesh_tw5n5")
+
+[node name="VelocityComponent" parent="." unique_id=600546887 instance=ExtResource("2_tw5n5")]
+
+[node name="GravityComponent" parent="." unique_id=1863881258 instance=ExtResource("3_1wx2c")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=657765910]
+shape = SubResource("CapsuleShape3D_1wx2c")
+
+[connection signal="link_reached" from="NavigationAgent3D" to="." method="OnLinkReached"]
+[connection signal="target_reached" from="NavigationAgent3D" to="." method="OnTargetReached"]

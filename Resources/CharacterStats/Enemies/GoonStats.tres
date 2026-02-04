@@ -1,0 +1,12 @@
+[gd_resource type="Resource" format=3 uid="uid://c53odamcx4ief"]
+
+[ext_resource type="Script" uid="uid://dp6ogn8mewc6m" path="res://Resources/CharacterStats/CharacterStats.cs" id="1_m1w27"]
+
+[resource]
+script = ExtResource("1_m1w27")
+MoveSpeed = 6.0
+MoveAcceleration = 2.0
+RotationRate = 9.0
+JumpForce = 4.8
+Gravity = 8.0
+GroundFriction = 10.0

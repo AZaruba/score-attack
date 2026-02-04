@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cn4aldc6nt85a"]
+
+[ext_resource type="Script" uid="uid://dulvb5owiqctx" path="res://Nodes/Components/Rotation/RotationComponent.cs" id="1_1c8au"]
+
+[node name="RotationComponent" type="Node" unique_id=1893574452]
+script = ExtResource("1_1c8au")

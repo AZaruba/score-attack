@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3 uid="uid://bv1uqhuy6ddu"]
+
+[ext_resource type="Script" uid="uid://bxhecutq2bpmn" path="res://Resources/CameraStats/CameraStats.cs" id="1_3njy2"]
+
+[resource]
+script = ExtResource("1_3njy2")
+TargetOffset = Vector3(-1.5, 0.5, 0)
+DistanceToTarget = Vector3(-1.5, 0.5, -3)
+TurnCorrectionRate = 10.0
+MovementRate = 6.0
