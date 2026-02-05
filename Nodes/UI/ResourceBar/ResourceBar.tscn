@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dvq8fx162lfof"]
+
+[ext_resource type="Texture2D" uid="uid://cgajtyx7aosqa" path="res://Assets/2D/Textures/Resources/TestResource.png" id="1_juonj"]
+[ext_resource type="Script" uid="uid://ba7pn1iaonbjv" path="res://Nodes/UI/ResourceBar/ResourceBar.cs" id="3_goiwd"]
+[ext_resource type="Texture2D" uid="uid://vg3orsxhgunb" path="res://Assets/2D/Textures/Resources/TestResourceFrame.png" id="3_w5f3h"]
+
+[node name="ResourceBar" type="TextureRect" unique_id=593471431]
+anchors_preset = -1
+anchor_right = 0.44400004
+anchor_bottom = 0.09900001
+offset_right = 0.5119629
+offset_bottom = -0.15200806
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_juonj")
+stretch_mode = 4
+script = ExtResource("3_goiwd")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2079672898]
+texture_filter = 1
+layout_mode = 0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 528.0
+offset_bottom = 80.0
+texture = ExtResource("3_w5f3h")

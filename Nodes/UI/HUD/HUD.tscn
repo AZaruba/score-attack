@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://dllcxpkeyfwj5"]
+
+[ext_resource type="Script" uid="uid://cosrfrlj2j1qv" path="res://Nodes/UI/HUD/HUD.cs" id="1_3k4io"]
+[ext_resource type="PackedScene" uid="uid://dvq8fx162lfof" path="res://Nodes/UI/ResourceBar/ResourceBar.tscn" id="1_35hys"]
+[ext_resource type="Shader" uid="uid://b4xu5qaueisx" path="res://Assets/2D/Textures/Resources/ResourceShader.gdshader" id="2_44025"]
+[ext_resource type="Texture2D" uid="uid://cgajtyx7aosqa" path="res://Assets/2D/Textures/Resources/TestResource.png" id="3_r73hk"]
+[ext_resource type="PackedScene" uid="uid://dyft21bugpju" path="res://Nodes/UI/Debug/DebugLog/DebugLog.tscn" id="4_r73hk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_44025"]
+shader = ExtResource("2_44025")
+shader_parameter/Texture2DParameter = ExtResource("3_r73hk")
+shader_parameter/Tint = Color(1.92523e-07, 0.8738422, 0.088672854, 1)
+shader_parameter/ResourceValue = 100.0
+shader_parameter/ResourceMax = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r73hk"]
+shader = ExtResource("2_44025")
+shader_parameter/Texture2DParameter = ExtResource("3_r73hk")
+shader_parameter/Tint = Color(0.55, 0.7299999, 1, 1)
+shader_parameter/ResourceValue = 100.0
+shader_parameter/ResourceMax = 100.0
+
+[node name="Hud" type="CanvasLayer" unique_id=775123952 node_paths=PackedStringArray("HealthBar", "AltBar")]
+script = ExtResource("1_3k4io")
+HealthBar = NodePath("HealthBar")
+AltBar = NodePath("EnergyBar")
+
+[node name="HealthBar" parent="." unique_id=593471431 instance=ExtResource("1_35hys")]
+material = SubResource("ShaderMaterial_44025")
+anchor_left = 0.007
+anchor_right = 0.007
+anchor_bottom = 0.0
+offset_left = 55.936
+offset_top = 64.0
+offset_right = 567.936
+offset_bottom = 128.0
+
+[node name="EnergyBar" parent="." unique_id=927382847 instance=ExtResource("1_35hys")]
+material = SubResource("ShaderMaterial_r73hk")
+anchor_left = 0.007
+anchor_right = 0.007
+anchor_bottom = 0.0
+offset_left = 55.936
+offset_top = 160.0
+offset_right = 567.936
+offset_bottom = 224.0
+
+[node name="DebugLog" parent="." unique_id=1292787755 instance=ExtResource("4_r73hk")]

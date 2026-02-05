@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://cs8ovhje8kw8m" path="res://Nodes/Components/Velocity/VelocityComponent.tscn" id="3_wfsgo"]
 [ext_resource type="PackedScene" uid="uid://cp6uncd35dj4c" path="res://Nodes/Components/Gravity/GravityComponent.tscn" id="5_5hgvc"]
 [ext_resource type="PackedScene" uid="uid://cn4aldc6nt85a" path="res://Nodes/Components/Rotation/RotationComponent.tscn" id="6_lp7xk"]
+[ext_resource type="PackedScene" uid="uid://cksgfveucfj1w" path="res://Nodes/Components/Health/HealthComponent.tscn" id="7_bhiar"]
+[ext_resource type="PackedScene" uid="uid://cfkd85rouw0ll" path="res://Nodes/Components/StateMachine/StateMachineComponent.tscn" id="8_50f7y"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lc4lg"]
 
@@ -14,7 +16,7 @@
 [sub_resource type="BoxMesh" id="BoxMesh_5hgvc"]
 size = Vector3(0.2, 0.2, 1)
 
-[node name="PlayerCharacter" type="CharacterBody3D" unique_id=73598226 node_paths=PackedStringArray("InputComponent", "VelocityComponent", "RotationComponent", "GravityComponent")]
+[node name="PlayerCharacter" type="CharacterBody3D" unique_id=73598226 node_paths=PackedStringArray("InputComponent", "VelocityComponent", "RotationComponent", "GravityComponent", "HealthComponent", "StateComponent")]
 physics_interpolation_mode = 1
 floor_constant_speed = true
 script = ExtResource("1_lm4g0")
@@ -22,6 +24,8 @@ InputComponent = NodePath("InputComponent")
 VelocityComponent = NodePath("VelocityComponent")
 RotationComponent = NodePath("RotationComponent")
 GravityComponent = NodePath("GravityComponent")
+HealthComponent = NodePath("HealthComponent")
+StateComponent = NodePath("StateMachineComponent")
 Stats = ExtResource("2_wfsgo")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=933859463]
@@ -42,3 +46,7 @@ mesh = SubResource("BoxMesh_5hgvc")
 Gravity = 9.8
 
 [node name="RotationComponent" parent="." unique_id=1893574452 instance=ExtResource("6_lp7xk")]
+
+[node name="HealthComponent" parent="." unique_id=1938335220 instance=ExtResource("7_bhiar")]
+
+[node name="StateMachineComponent" parent="." unique_id=998481345 instance=ExtResource("8_50f7y")]

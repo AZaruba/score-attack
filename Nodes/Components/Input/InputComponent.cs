@@ -19,7 +19,7 @@ public partial class InputComponent : Node
     MoveInput = Input.GetAxis(InputAction.MoveBackward, InputAction.MoveForward);
     StrafeInput = Input.GetAxis(InputAction.MoveLeft, InputAction.MoveRight);
     JumpInput = Input.IsActionJustPressed(InputAction.Jump);
-    JumpInput = Input.IsActionJustPressed(InputAction.Attack);
+    AttackInput = Input.IsActionJustPressed(InputAction.Attack);
 
     if (Input.IsActionPressed(InputAction.Jump))
     {

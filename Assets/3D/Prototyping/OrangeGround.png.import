@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://7nsrhjk4g11y"
 path.s3tc="res://.godot/imported/OrangeGround.png-22596b7d386b44c1c3dc68f6dde1fc0a.s3tc.ctex"
+path.etc2="res://.godot/imported/OrangeGround.png-22596b7d386b44c1c3dc68f6dde1fc0a.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Assets/3D/Prototyping/OrangeGround.png"
-dest_files=["res://.godot/imported/OrangeGround.png-22596b7d386b44c1c3dc68f6dde1fc0a.s3tc.ctex"]
+dest_files=["res://.godot/imported/OrangeGround.png-22596b7d386b44c1c3dc68f6dde1fc0a.s3tc.ctex", "res://.godot/imported/OrangeGround.png-22596b7d386b44c1c3dc68f6dde1fc0a.etc2.ctex"]
 
 [params]
 

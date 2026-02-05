@@ -8,4 +8,5 @@ public partial class CharacterStats : Resource
   [Export] public float JumpForce;
   [Export] public float Gravity;
   [Export] public float GroundFriction;
+  [Export] public float MaxHealth;
 }

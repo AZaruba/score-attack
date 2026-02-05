@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://dyft21bugpju"]
+
+[ext_resource type="Script" uid="uid://cohd674bc3g3e" path="res://Nodes/UI/Debug/DebugLog/DebugLog.cs" id="1_pmf2k"]
+
+[node name="DebugLog" type="Control" unique_id=1292787755 node_paths=PackedStringArray("LogLines")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pmf2k")
+LogLines = [NodePath("Log1"), NodePath("Log2"), NodePath("Log3"), NodePath("Log4")]
+
+[node name="Log1" type="RichTextLabel" parent="." unique_id=1045482306]
+layout_mode = 0
+offset_top = 256.0
+offset_right = 1024.0
+offset_bottom = 296.0
+theme_override_font_sizes/normal_font_size = 24
+
+[node name="Log2" type="RichTextLabel" parent="." unique_id=1322556979]
+layout_mode = 0
+offset_top = 320.0
+offset_right = 1024.0
+offset_bottom = 360.0
+theme_override_font_sizes/normal_font_size = 24
+
+[node name="Log3" type="RichTextLabel" parent="." unique_id=170024107]
+layout_mode = 0
+offset_top = 384.0
+offset_right = 1024.0
+offset_bottom = 424.0
+theme_override_font_sizes/normal_font_size = 24
+
+[node name="Log4" type="RichTextLabel" parent="." unique_id=1157832086]
+layout_mode = 0
+offset_top = 448.0
+offset_right = 1024.0
+offset_bottom = 488.0
+theme_override_font_sizes/normal_font_size = 24

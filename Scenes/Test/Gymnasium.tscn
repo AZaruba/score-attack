@@ -1,17 +1,23 @@
 [gd_scene format=3 uid="uid://crspaphln01qm"]
 
+[ext_resource type="Script" uid="uid://bygwi80vcrhhc" path="res://Nodes/GameManager/GameManager.cs" id="1_j01n8"]
 [ext_resource type="PackedScene" uid="uid://cbf1njosplfhw" path="res://Nodes/Characters/PlayerCharacter/PlayerCharacter.tscn" id="2_okpsg"]
 [ext_resource type="PackedScene" uid="uid://dv2rtd025ghcj" path="res://Nodes/Camera/CharacterCamera.tscn" id="3_6mydh"]
 [ext_resource type="PackedScene" uid="uid://cifntbeeljetl" path="res://Assets/3D/Environments/Gymnasium.tscn" id="3_kf4nt"]
 [ext_resource type="PackedScene" uid="uid://cn5fv7hjalxcn" path="res://Nodes/Characters/Enemies/Goon/Goon.tscn" id="4_kf4nt"]
+[ext_resource type="PackedScene" uid="uid://dllcxpkeyfwj5" path="res://Nodes/UI/HUD/HUD.tscn" id="5_dree5"]
 
 [sub_resource type="Environment" id="Environment_okpsg"]
-background_mode = 2
+background_mode = 1
+background_color = Color(0.13049997, 0.5372252, 0.87, 1)
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 
-[node name="GameRoot" type="Node3D" unique_id=572831494]
+[node name="GameRoot" type="Node3D" unique_id=572831494 node_paths=PackedStringArray("HeadsUpDisplay", "PlayerCharacter")]
 physics_interpolation_mode = 1
+script = ExtResource("1_j01n8")
+HeadsUpDisplay = NodePath("Hud")
+PlayerCharacter = NodePath("PlayerCharacter")
 
 [node name="PlayerCharacter" parent="." unique_id=73598226 instance=ExtResource("2_okpsg")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1, 0)
@@ -28,3 +34,5 @@ Target = NodePath("../PlayerCharacter")
 
 [node name="Goon" parent="." unique_id=1804750191 instance=ExtResource("4_kf4nt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 5, -12)
+
+[node name="Hud" parent="." unique_id=775123952 instance=ExtResource("5_dree5")]
