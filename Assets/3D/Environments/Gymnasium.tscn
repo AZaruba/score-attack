@@ -18,3 +18,5 @@ end_position = Vector3(9, 0, 0)
 [node name="PlatformLink2" type="NavigationLink3D" parent="." unique_id=2084140608]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 4, -17)
 end_position = Vector3(6, 0, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=459252467]

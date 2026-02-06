@@ -7,6 +7,7 @@ public partial class Goon : CharacterBody3D
   [Export] NavigationAgent3D NavigationAgent;
   [Export] VelocityComponent VelocityComponent;
   [Export] GravityComponent GravityComponent;
+  [Export] HealthComponent HealthComponent;
   [Export] CharacterStats Stats;
 
   private Vector3 NextTarget;
@@ -16,10 +17,18 @@ public partial class Goon : CharacterBody3D
   public override void _Ready()
   {
     NavigationAgent.TargetPosition = new Vector3(0,0,0);
+    HealthComponent.OnHealthZero += OnHealthZero;
+    HealthComponent.InitHealth(Stats.MaxHealth);
+  }
+
+  public override void _ExitTree()
+  {
+    HealthComponent.OnHealthZero -= OnHealthZero;
   }
 
   public override void _PhysicsProcess(double delta)
   {
+    DebugLog.Log(HealthComponent.GetCurrentHealth().ToString());
     if (Arrived)
     {
       return;
@@ -63,5 +72,17 @@ public partial class Goon : CharacterBody3D
   {
     // Change to arrived state
     Arrived = true;
+  }
+
+  private void OnHitByAttack(Node3D AttackNode)
+  {
+    GD.Print("hit");
+    HealthComponent.Damage(10);
+  }
+
+  private void OnHealthZero()
+  {
+    // TODO: return to object pool
+    QueueFree();
   }
 }

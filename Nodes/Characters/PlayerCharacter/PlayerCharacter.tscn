@@ -8,16 +8,13 @@
 [ext_resource type="PackedScene" uid="uid://cn4aldc6nt85a" path="res://Nodes/Components/Rotation/RotationComponent.tscn" id="6_lp7xk"]
 [ext_resource type="PackedScene" uid="uid://cksgfveucfj1w" path="res://Nodes/Components/Health/HealthComponent.tscn" id="7_bhiar"]
 [ext_resource type="PackedScene" uid="uid://cfkd85rouw0ll" path="res://Nodes/Components/StateMachine/StateMachineComponent.tscn" id="8_50f7y"]
+[ext_resource type="PackedScene" uid="uid://ci5hvlkkqrvdf" path="res://Assets/3D/Characters/Scorecharacter/DemoChar.tscn" id="9_jwjeh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lc4lg"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_lm4g0"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_5hgvc"]
-size = Vector3(0.2, 0.2, 1)
-
-[node name="PlayerCharacter" type="CharacterBody3D" unique_id=73598226 node_paths=PackedStringArray("InputComponent", "VelocityComponent", "RotationComponent", "GravityComponent", "HealthComponent", "StateComponent")]
+[node name="PlayerCharacter" type="CharacterBody3D" unique_id=73598226 node_paths=PackedStringArray("InputComponent", "VelocityComponent", "RotationComponent", "GravityComponent", "HealthComponent", "StateComponent", "AnimatingBodyComponent")]
 physics_interpolation_mode = 1
+collision_mask = 13
 floor_constant_speed = true
 script = ExtResource("1_lm4g0")
 InputComponent = NodePath("InputComponent")
@@ -26,17 +23,12 @@ RotationComponent = NodePath("RotationComponent")
 GravityComponent = NodePath("GravityComponent")
 HealthComponent = NodePath("HealthComponent")
 StateComponent = NodePath("StateMachineComponent")
+AnimatingBodyComponent = NodePath("DemoChar")
 Stats = ExtResource("2_wfsgo")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=933859463]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_lc4lg")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1287485598]
-mesh = SubResource("CapsuleMesh_lm4g0")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D" unique_id=1331876362]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
-mesh = SubResource("BoxMesh_5hgvc")
 
 [node name="InputComponent" parent="." unique_id=1528721609 instance=ExtResource("2_cyn0b")]
 
@@ -50,3 +42,5 @@ Gravity = 9.8
 [node name="HealthComponent" parent="." unique_id=1938335220 instance=ExtResource("7_bhiar")]
 
 [node name="StateMachineComponent" parent="." unique_id=998481345 instance=ExtResource("8_50f7y")]
+
+[node name="DemoChar" parent="." unique_id=476416424 instance=ExtResource("9_jwjeh")]

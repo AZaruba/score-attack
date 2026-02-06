@@ -4,6 +4,7 @@
 [ext_resource type="Resource" uid="uid://c53odamcx4ief" path="res://Resources/CharacterStats/Enemies/GoonStats.tres" id="2_1wx2c"]
 [ext_resource type="PackedScene" uid="uid://cs8ovhje8kw8m" path="res://Nodes/Components/Velocity/VelocityComponent.tscn" id="2_tw5n5"]
 [ext_resource type="PackedScene" uid="uid://cp6uncd35dj4c" path="res://Nodes/Components/Gravity/GravityComponent.tscn" id="3_1wx2c"]
+[ext_resource type="PackedScene" uid="uid://cksgfveucfj1w" path="res://Nodes/Components/Health/HealthComponent.tscn" id="5_2lime"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0o1r4"]
 albedo_color = Color(1, 0, 0, 1)
@@ -13,11 +14,13 @@ material = SubResource("StandardMaterial3D_0o1r4")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1wx2c"]
 
-[node name="Goon" type="CharacterBody3D" unique_id=1804750191 node_paths=PackedStringArray("NavigationAgent", "VelocityComponent", "GravityComponent")]
+[node name="Goon" type="CharacterBody3D" unique_id=1804750191 node_paths=PackedStringArray("NavigationAgent", "VelocityComponent", "GravityComponent", "HealthComponent")]
+collision_layer = 4
 script = ExtResource("1_s5nfe")
 NavigationAgent = NodePath("NavigationAgent3D")
 VelocityComponent = NodePath("VelocityComponent")
 GravityComponent = NodePath("GravityComponent")
+HealthComponent = NodePath("HealthComponent")
 Stats = ExtResource("2_1wx2c")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=473046625]
@@ -30,8 +33,18 @@ mesh = SubResource("CapsuleMesh_tw5n5")
 
 [node name="GravityComponent" parent="." unique_id=1863881258 instance=ExtResource("3_1wx2c")]
 
+[node name="HealthComponent" parent="." unique_id=1938335220 instance=ExtResource("5_2lime")]
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=657765910]
+shape = SubResource("CapsuleShape3D_1wx2c")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=257247511]
+collision_layer = 8
+collision_mask = 32
+
+[node name="HitCollider" type="CollisionShape3D" parent="Area3D" unique_id=270975031]
 shape = SubResource("CapsuleShape3D_1wx2c")
 
 [connection signal="link_reached" from="NavigationAgent3D" to="." method="OnLinkReached"]
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="OnTargetReached"]
+[connection signal="area_entered" from="Area3D" to="." method="OnHitByAttack"]

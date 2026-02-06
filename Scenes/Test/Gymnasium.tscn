@@ -20,7 +20,7 @@ HeadsUpDisplay = NodePath("Hud")
 PlayerCharacter = NodePath("PlayerCharacter")
 
 [node name="PlayerCharacter" parent="." unique_id=73598226 instance=ExtResource("2_okpsg")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1, 0)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=753730496]
 environment = SubResource("Environment_okpsg")

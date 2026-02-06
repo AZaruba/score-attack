@@ -13,6 +13,7 @@ public partial class PlayerCharacterController : CharacterBody3D
   [Export] private GravityComponent GravityComponent;
   [Export] private HealthComponent HealthComponent;
   [Export] private StateMachineComponent StateComponent;
+  [Export] private AnimatingBodyComponent AnimatingBodyComponent;
   [Export] private CharacterStats Stats;
 
   // Signals
@@ -117,12 +118,31 @@ public partial class PlayerCharacterController : CharacterBody3D
 
     if (InputComponent.GetAttack())
     {
-      HealthComponent.Damage(10);
+      if (AnimatingBodyComponent.GetCurrentAnimation().Equals("Punch"))
+      {
+        AnimatingBodyComponent.PlayOneShot("Punch2", false);
+      } else
+      {
+        AnimatingBodyComponent.PlayOneShot("Punch", false);
+      }
     }
 
     // process Rotation
     Basis = RotationComponent.RotateBasis(Basis, Vector3.Up, Stats.RotationRate * (float)delta * InputComponent.GetStrafeInput() * -1);
 
+    // how to do animation
+    if (InputComponent.GetMoveInput() > 0)
+    {
+      AnimatingBodyComponent.PlayAnimationLoop("MoveForward");
+    }
+    else if (InputComponent.GetMoveInput() < 0)
+    {
+      AnimatingBodyComponent.PlayAnimationLoop("MoveBackward");
+    }
+    else
+    {
+      //AnimatingBodyComponent.PlayAnimationLoop("Standing");
+    }
     // Apply to Engine
     VelocityComponent.CapVelocity(Stats.MoveSpeed);
     Velocity = VelocityComponent.GetCurrentVelocity() + GravityComponent.GetVerticalVelocity();
@@ -144,11 +164,6 @@ public partial class PlayerCharacterController : CharacterBody3D
 
     // process Gravity
     GravityComponent.AddGravity(Stats.Gravity * (float)delta, IsOnFloor());
-
-    if (InputComponent.GetAttack())
-    {
-      HealthComponent.Damage(10);
-    }
 
     // Apply to Engine
     VelocityComponent.CapVelocity(Stats.MoveSpeed);

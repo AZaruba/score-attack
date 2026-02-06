@@ -11,6 +11,7 @@ namespace StateManagement
     JUMPING,
     ATTACKING,
     BLOCKING,
+    HIT_BY_ATTACK,
     KNOCKED_DOWN,
     JUGGLED
   }
