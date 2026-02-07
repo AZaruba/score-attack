@@ -2,7 +2,7 @@ using Godot;
 using StateManagement;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 public partial class PlayerCharacterController : CharacterBody3D
 {
@@ -48,16 +48,25 @@ public partial class PlayerCharacterController : CharacterBody3D
     EmitSignal(SignalName.OnPlayerHealthUpdate, newHealth);
   }
 
+  private void OnCurrentAnimationFinished()
+  {
+    StateComponent.RunCommand(Command.FINISH_ATTACK);
+  }
+
   private void InitStateMachine()
   {
     StateActions = new Dictionary<StateID, Action<float>>
     {
       { StateID.GROUNDED, NormalState },
-      { StateID.JUMPING, JumpingState }
+      { StateID.JUMPING, JumpingState },
+      { StateID.ATTACKING, AttackingState }
     };
     StateComponent.AddState(StateID.GROUNDED);
     StateComponent.AddState(StateID.JUMPING);
+    StateComponent.AddState(StateID.ATTACKING);
     StateComponent.AddTransitionToState(StateID.GROUNDED, Command.JUMP, StateID.JUMPING);
+    StateComponent.AddTransitionToState(StateID.GROUNDED, Command.START_ATTACK, StateID.ATTACKING);
+    StateComponent.AddTransitionToState(StateID.ATTACKING, Command.FINISH_ATTACK, StateID.GROUNDED);
     StateComponent.AddTransitionToState(StateID.JUMPING, Command.LAND, StateID.GROUNDED);
     StateComponent.Enter(StateID.GROUNDED);
   }
@@ -66,12 +75,14 @@ public partial class PlayerCharacterController : CharacterBody3D
   {
     HealthComponent.OnHeal += OnPlayerHealthUpdated;
     HealthComponent.OnDamage += OnPlayerHealthUpdated;
+    AnimatingBodyComponent.OnCurrentAnimationFinished += OnCurrentAnimationFinished;
   }
 
   private void TeardownSignals()
   {
     HealthComponent.OnHeal -= OnPlayerHealthUpdated;
     HealthComponent.OnDamage -= OnPlayerHealthUpdated;
+    AnimatingBodyComponent.OnCurrentAnimationFinished -= OnCurrentAnimationFinished;
   }
 
   public void RunStateMachineFunction(Action<float> StateFunction, float delta)
@@ -89,7 +100,11 @@ public partial class PlayerCharacterController : CharacterBody3D
     {
       StateComponent.RunCommand(Command.JUMP);
     }
-    DebugLog.Log($"Current Player State: {StateComponent.GetCurrentState()}");
+    if (InputComponent.GetAttack())
+    {
+      StateComponent.RunCommand(Command.START_ATTACK);
+    }
+    AnimatingBodyComponent.SetCurrentState(StateComponent.GetCurrentState());
   }
 
   public void NormalState(float delta)
@@ -116,33 +131,12 @@ public partial class PlayerCharacterController : CharacterBody3D
       GravityComponent.ApplyVerticalForce(Stats.JumpForce);
     }
 
-    if (InputComponent.GetAttack())
-    {
-      if (AnimatingBodyComponent.GetCurrentAnimation().Equals("Punch"))
-      {
-        AnimatingBodyComponent.PlayOneShot("Punch2", false);
-      } else
-      {
-        AnimatingBodyComponent.PlayOneShot("Punch", false);
-      }
-    }
-
     // process Rotation
     Basis = RotationComponent.RotateBasis(Basis, Vector3.Up, Stats.RotationRate * (float)delta * InputComponent.GetStrafeInput() * -1);
 
-    // how to do animation
-    if (InputComponent.GetMoveInput() > 0)
-    {
-      AnimatingBodyComponent.PlayAnimationLoop("MoveForward");
-    }
-    else if (InputComponent.GetMoveInput() < 0)
-    {
-      AnimatingBodyComponent.PlayAnimationLoop("MoveBackward");
-    }
-    else
-    {
-      //AnimatingBodyComponent.PlayAnimationLoop("Standing");
-    }
+    //Animate 
+    AnimatingBodyComponent.SetAnimationParameter(PCAnimationNames.MoveBlendPath, InputComponent.GetMoveInput());
+    
     // Apply to Engine
     VelocityComponent.CapVelocity(Stats.MoveSpeed);
     Velocity = VelocityComponent.GetCurrentVelocity() + GravityComponent.GetVerticalVelocity();
@@ -168,6 +162,16 @@ public partial class PlayerCharacterController : CharacterBody3D
     // Apply to Engine
     VelocityComponent.CapVelocity(Stats.MoveSpeed);
     Velocity = VelocityComponent.GetCurrentVelocity() + GravityComponent.GetVerticalVelocity();
+    MoveAndSlide();
+  }
+
+  public void AttackingState(float delta)
+  {
+    Velocity = Vector3.Zero;
+    if (InputComponent.GetAttack())
+    {
+      AnimatingBodyComponent.QueueAnimation();
+    }
     MoveAndSlide();
   }
 }

@@ -28,7 +28,6 @@ public partial class Goon : CharacterBody3D
 
   public override void _PhysicsProcess(double delta)
   {
-    DebugLog.Log(HealthComponent.GetCurrentHealth().ToString());
     if (Arrived)
     {
       return;

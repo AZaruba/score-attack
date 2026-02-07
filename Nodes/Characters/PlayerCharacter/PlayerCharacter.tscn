@@ -44,3 +44,4 @@ Gravity = 9.8
 [node name="StateMachineComponent" parent="." unique_id=998481345 instance=ExtResource("8_50f7y")]
 
 [node name="DemoChar" parent="." unique_id=476416424 instance=ExtResource("9_jwjeh")]
+AdvanceExpressionBaseNode = NodePath("..")

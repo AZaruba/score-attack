@@ -1,42 +1,55 @@
+using System.Diagnostics;
 using Godot;
-using System;
+using StateManagement;
 
 public partial class AnimatingBodyComponent : Node
 {
-  [Export] AnimationPlayer AnimPlayer;
+  [Export] AnimationTree AnimationTreeComponent;
+  [Export] bool AnimationTransitionReady;
+
+  [Signal] public delegate void OnCurrentAnimationFinishedEventHandler();
+  public bool AnimationQueued;
 
   private bool IsPlayingLockedAnimation;
+  private StateID CurrentState;
 
   public override void _Ready()
   {
-    
+    AnimationTreeComponent.AdvanceExpressionBaseNode = GetPath();
   }
 
   public override void _PhysicsProcess(double delta)
   {
-    DebugLog.Log($"Animation Locked: {IsPlayingLockedAnimation}", 2);
+    DebugLog.Log($"Current State: {CurrentState}");
+    DebugLog.Log($"Animation Queued? {AnimationQueued}",1);
+    DebugLog.Log($"Current Ready? {AnimationTransitionReady}",2);
+    DebugLog.Log($"Should punch: {AnimationQueued && AnimationTransitionReady}",3);
   }
 
   public void PlayAnimationLoop(string AnimationName)
   {
-    if (!IsPlayingLockedAnimation)
-    {
-      AnimPlayer.Play(AnimationName);
-    }
+    
   }
 
-  public void PlayOneShot(string AnimationName, bool Cancelable = false)
+  public void SetAnimationParameter(string Path, float Value)
   {
-    AnimPlayer.Play(AnimationName);
+    AnimationTreeComponent.Set(Path, Value);
   }
 
-  public void OnAnimFinished(string AnimationName)
+  // somewhat hacky solution to cleanly pass this information to the AnimationTree
+  public void SetCurrentState(StateID state)
   {
-    IsPlayingLockedAnimation = false;
+    CurrentState = state;
   }
 
-  public string GetCurrentAnimation()
+  public void QueueAnimation()
   {
-    return AnimPlayer.CurrentAnimation;
+    AnimationQueued = true;
+  }
+
+  private void OnAnimationFinished(StringName AnimationName)
+  {
+    AnimationQueued = false;
+    EmitSignal(SignalName.OnCurrentAnimationFinished);
   }
 }

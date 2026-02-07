@@ -1,0 +1,41 @@
+[gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://cwuj8i5xfi872"]
+
+[ext_resource type="AnimationNodeBlendTree" uid="uid://bfq0uroygd6n" path="res://Assets/3D/Characters/Scorecharacter/Animations/AnimationData/PlayerMovementTree.tres" id="1_30su3"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_30su3"]
+animation = &"Punch"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8d486"]
+animation = &"Punch2"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8d486"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fkoxh"]
+advance_mode = 2
+advance_expression = "AnimationQueued && AnimationTransitionReady"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vm2mc"]
+switch_mode = 2
+advance_mode = 2
+advance_expression = "CurrentState == 1"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_30su3"]
+advance_mode = 2
+advance_expression = "CurrentState == 3"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xxnqp"]
+switch_mode = 2
+advance_mode = 2
+advance_expression = "CurrentState == 1"
+
+[resource]
+states/Idle/node = ExtResource("1_30su3")
+states/Idle/position = Vector2(455, 92)
+states/Punch/node = SubResource("AnimationNodeAnimation_30su3")
+states/Punch/position = Vector2(455, 214)
+states/Punch2/node = SubResource("AnimationNodeAnimation_8d486")
+states/Punch2/position = Vector2(600, 214)
+states/Start/position = Vector2(186, 109)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_8d486"), "Punch", "Punch2", SubResource("AnimationNodeStateMachineTransition_fkoxh"), "Punch", "Idle", SubResource("AnimationNodeStateMachineTransition_vm2mc"), "Idle", "Punch", SubResource("AnimationNodeStateMachineTransition_30su3"), "Punch2", "Idle", SubResource("AnimationNodeStateMachineTransition_xxnqp")]
+graph_offset = Vector2(82, 55)
