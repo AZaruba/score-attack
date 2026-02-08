@@ -40,10 +40,10 @@ materials/extract_path=""
 _subresources={
 "animations": {
 "MoveBackward": {
-"save_to_file/enabled": false,
-"save_to_file/fallback_path": "",
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://Assets/3D/Characters/Scorecharacter/Animations/MoveBackward.anim",
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "",
+"save_to_file/path": "uid://dsj0qranjm6im",
 "settings/loop_mode": 1,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -2096,10 +2096,10 @@ _subresources={
 "slices/amount": 0
 },
 "MoveForward": {
-"save_to_file/enabled": false,
-"save_to_file/fallback_path": "",
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://Assets/3D/Characters/Scorecharacter/Animations/MoveForward.anim",
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "",
+"save_to_file/path": "uid://60cshis4essx",
 "settings/loop_mode": 1,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -8264,10 +8264,10 @@ _subresources={
 "slices/amount": 0
 },
 "Standing": {
-"save_to_file/enabled": false,
-"save_to_file/fallback_path": "",
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://Assets/3D/Characters/Scorecharacter/Animations/Standing.anim",
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "",
+"save_to_file/path": "uid://bc543jgldwygv",
 "settings/loop_mode": 1,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,

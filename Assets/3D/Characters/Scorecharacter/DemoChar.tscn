@@ -7,11 +7,11 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_3jmqv"]
 radius = 0.25
 
-[node name="DemoChar" unique_id=1399613123 node_paths=PackedStringArray("AnimationTreeComponent") instance=ExtResource("1_je37i")]
+[node name="DemoChar" unique_id=1433090310 node_paths=PackedStringArray("AnimationTreeComponent") instance=ExtResource("1_je37i")]
 script = ExtResource("2_3jmqv")
 AnimationTreeComponent = NodePath("AnimationTree")
 
-[node name="Skeleton3D" parent="CharacterArm" parent_id_path=PackedInt32Array(985202506) index="0" unique_id=1650548435]
+[node name="Skeleton3D" parent="CharacterArm" parent_id_path=PackedInt32Array(1092242645) index="0" unique_id=1958967253]
 bones/0/position = Vector3(7.042664e-18, 1.3146944, 0.021762757)
 bones/0/rotation = Quaternion(0.053891174, -0.549062, 0.028605035, 0.8335517)
 bones/1/rotation = Quaternion(0.008969966, -0.0017545839, 0.00048099228, 0.9999581)
@@ -59,6 +59,7 @@ collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackHitbox" index="0" unique_id=574368463]
 shape = SubResource("SphereShape3D_3jmqv")
+disabled = true
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="3" unique_id=2133168080]
 tree_root = ExtResource("3_lwink")
