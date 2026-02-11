@@ -11,7 +11,7 @@ radius = 0.25
 script = ExtResource("2_3jmqv")
 AnimationTreeComponent = NodePath("AnimationTree")
 
-[node name="Skeleton3D" parent="CharacterArm" parent_id_path=PackedInt32Array(1092242645) index="0" unique_id=1958967253]
+[node name="Skeleton3D" parent="CharacterArm" parent_id_path=PackedInt32Array(184543120) index="0" unique_id=1243589399]
 bones/0/position = Vector3(7.042664e-18, 1.3146944, 0.021762757)
 bones/0/rotation = Quaternion(0.053891174, -0.549062, 0.028605035, 0.8335517)
 bones/1/rotation = Quaternion(0.008969966, -0.0017545839, 0.00048099228, 0.9999581)

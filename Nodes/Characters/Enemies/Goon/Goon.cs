@@ -55,8 +55,8 @@ public partial class Goon : CharacterBody3D
     Direction.Y = 0;
 
     VelocityComponent.AddForce(Direction.Normalized() * Stats.MoveAcceleration);
+    
     VelocityComponent.CapVelocity(Stats.MoveSpeed);
-
     Velocity = VelocityComponent.GetCurrentVelocity() + GravityComponent.GetVerticalVelocity();
     MoveAndSlide();
   }
