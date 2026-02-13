@@ -2,7 +2,6 @@ using Godot;
 using StateManagement;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 public partial class PlayerCharacterController : CharacterBody3D
 {

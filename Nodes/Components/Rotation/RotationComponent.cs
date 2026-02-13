@@ -7,4 +7,10 @@ public partial class RotationComponent : Node
   {
     return Current.Rotated(Axis, Mathf.DegToRad(Rate));
   }
+
+  // alternate implementation using Radians
+  public Basis RotateBasisR(Basis Current, Vector3 Axis, float Rate)
+  {
+    return Current.Rotated(Axis, Rate);
+  }
 }

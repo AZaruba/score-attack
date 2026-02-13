@@ -13,7 +13,10 @@ namespace StateManagement
     BLOCKING,
     HIT_BY_ATTACK,
     KNOCKED_DOWN,
-    JUGGLED
+    JUGGLED,
+    APPROACHING,
+    ORBITING,
+    ENGAGING
   }
 
   public enum Command
@@ -27,8 +30,13 @@ namespace StateManagement
     PUSH_BACK,
     START_ATTACK,
     FINISH_ATTACK,
+    GET_HIT,
     BLOCK,
-    UNBLOCK
+    UNBLOCK,
+    APPROACH,
+    ORBIT,
+    ENGAGE,
+    DISENGAGE
   }
 
   public class State

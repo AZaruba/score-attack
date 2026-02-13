@@ -20,10 +20,6 @@ public partial class AnimatingBodyComponent : Node
 
   public override void _PhysicsProcess(double delta)
   {
-    DebugLog.Log($"Current State: {CurrentState}");
-    DebugLog.Log($"Animation Queued? {AnimationQueued}",1);
-    DebugLog.Log($"Current Ready? {AnimationTransitionReady}",2);
-    DebugLog.Log($"Should punch: {AnimationQueued && AnimationTransitionReady}",3);
   }
 
   public void PlayAnimationLoop(string AnimationName)
@@ -42,9 +38,13 @@ public partial class AnimatingBodyComponent : Node
     CurrentState = state;
   }
 
+  // should allow for cancelable animation override?
   public void QueueAnimation()
   {
-    AnimationQueued = true;
+    if (AnimationTransitionReady)
+    {
+      AnimationQueued = true;
+    }
   }
 
   private void OnAnimationFinished(StringName AnimationName)

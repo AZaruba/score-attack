@@ -1,6 +1,7 @@
 using Godot;
 using StateManagement;
 using System.Collections.Generic;
+using System.Linq;
 
 
 /*
@@ -59,6 +60,26 @@ public partial class StateMachineComponent : Node
       return true;
     }
     throw new System.Exception($"State Add Exception, State Machine {GetInstanceId()} does not contain both states: {id} and {next}");
+  }
+
+  public bool AddTransitionToAllStates(Command cmd, StateID next, StateID[] exceptions = null)
+  {
+    foreach(StateID id in StateLookup.Keys)
+    {
+      if (exceptions != null && exceptions.Contains(id))
+      {
+        continue;
+      }
+      else if (StateLookup.TryGetValue(id, out State value) && StateLookup.ContainsKey(next))
+      {
+        value.AddTransition(cmd, next);
+      }
+      else
+      {
+        throw new System.Exception($"State Add Exception, State Machine {GetInstanceId()} does not contain both states: {id} and {next}");
+      }
+    }
+    return true;
   }
 
   /*
