@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cohd674bc3g3e" path="res://Nodes/UI/Debug/DebugLog/DebugLog.cs" id="1_pmf2k"]
 
-[node name="DebugLog" type="Control" unique_id=1292787755 node_paths=PackedStringArray("LogLines")]
+[node name="DebugLog" type="Control" unique_id=1292787755 node_paths=PackedStringArray("LogLines", "TimerLabel", "Timer")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +11,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pmf2k")
 LogLines = [NodePath("Log1"), NodePath("Log2"), NodePath("Log3"), NodePath("Log4")]
+TimerLabel = NodePath("Log5")
+Timer = NodePath("Timer")
 
 [node name="Log1" type="RichTextLabel" parent="." unique_id=1045482306]
 layout_mode = 0
@@ -39,3 +41,15 @@ offset_top = 448.0
 offset_right = 1024.0
 offset_bottom = 488.0
 theme_override_font_sizes/normal_font_size = 24
+
+[node name="Log5" type="RichTextLabel" parent="." unique_id=562768141]
+layout_mode = 0
+offset_top = 512.0
+offset_right = 1024.0
+offset_bottom = 552.0
+theme_override_font_sizes/normal_font_size = 24
+
+[node name="Timer" type="Timer" parent="." unique_id=1033284384]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="OnTimeout"]

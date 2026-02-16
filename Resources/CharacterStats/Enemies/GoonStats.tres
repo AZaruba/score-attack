@@ -10,4 +10,4 @@ RotationRate = 9.0
 JumpForce = 4.8
 Gravity = 8.0
 GroundFriction = 10.0
-MaxHealth = 30.0
+MaxHealth = 200.0

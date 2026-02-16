@@ -47,9 +47,16 @@ public partial class PlayerCharacterController : CharacterBody3D
     EmitSignal(SignalName.OnPlayerHealthUpdate, newHealth);
   }
 
+  private void OnHitByAttack(Node3D AttackNode)
+  {
+    HealthComponent.Damage(10);
+    AnimatingBodyComponent.TravelTo("HitStun");
+  }
+
   private void OnCurrentAnimationFinished()
   {
     StateComponent.RunCommand(Command.FINISH_ATTACK);
+    AnimatingBodyComponent.ResetAnimationQueue();
   }
 
   private void InitStateMachine()
@@ -128,6 +135,11 @@ public partial class PlayerCharacterController : CharacterBody3D
     if (InputComponent.GetJump())
     {
       GravityComponent.ApplyVerticalForce(Stats.JumpForce);
+    }
+
+    if (InputComponent.GetAttack())
+    {
+      AnimatingBodyComponent.TravelTo("Punch");
     }
 
     // process Rotation

@@ -13,6 +13,11 @@ public partial class AnimatingBodyComponent : Node
   private bool IsPlayingLockedAnimation;
   private StateID CurrentState;
 
+  public void DEBUGLogState(int idx)
+  {
+    DebugLog.Log(CurrentState.ToString(), idx);
+  }
+
   public override void _Ready()
   {
     AnimationTreeComponent.AdvanceExpressionBaseNode = GetPath();
@@ -47,9 +52,19 @@ public partial class AnimatingBodyComponent : Node
     }
   }
 
-  private void OnAnimationFinished(StringName AnimationName)
+  public void ResetAnimationQueue()
   {
     AnimationQueued = false;
+  }
+
+  public void TravelTo(string stateName)
+  {
+    AnimationNodeStateMachinePlayback animSM = (AnimationNodeStateMachinePlayback)(GodotObject)AnimationTreeComponent.Get("parameters/playback");
+    animSM.Travel(stateName);
+  }
+
+  private void OnAnimationFinished(StringName AnimationName)
+  {
     EmitSignal(SignalName.OnCurrentAnimationFinished);
   }
 }

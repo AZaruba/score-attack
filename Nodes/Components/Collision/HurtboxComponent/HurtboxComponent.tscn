@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c13edj5jn4dco"]
+
+[ext_resource type="Script" uid="uid://dh45800u4tv5r" path="res://Nodes/Components/Collision/HurtboxComponent/HurtboxComponent.cs" id="1_vdek7"]
+
+[node name="HurtboxComponent" type="Node" unique_id=32292104]
+script = ExtResource("1_vdek7")

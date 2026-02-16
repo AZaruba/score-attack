@@ -10,8 +10,9 @@ radius = 0.25
 [node name="DemoChar" unique_id=1649287524 node_paths=PackedStringArray("AnimationTreeComponent") instance=ExtResource("1_je37i")]
 script = ExtResource("2_3jmqv")
 AnimationTreeComponent = NodePath("AnimationTree")
+AnimationTransitionReady = true
 
-[node name="Skeleton3D" parent="CharacterArm" parent_id_path=PackedInt32Array(651326132) index="0" unique_id=1487694634]
+[node name="Skeleton3D" parent="CharacterArm" parent_id_path=PackedInt32Array(1223657699) index="0" unique_id=1931878502]
 bones/0/position = Vector3(7.042664e-18, 1.3146944, 0.021762757)
 bones/0/rotation = Quaternion(0.053891174, -0.549062, 0.028605035, 0.8335517)
 bones/1/rotation = Quaternion(0.008969966, -0.0017545839, 0.00048099228, 0.9999581)

@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://jcducx1h7dfh"]
+
+[ext_resource type="Shader" uid="uid://dr6cqhmd8604a" path="res://Assets/2D/Textures/Resources/WorldResource/WorldResourceShader.gdshader" id="1_aqy2r"]
+[ext_resource type="Texture2D" uid="uid://cgajtyx7aosqa" path="res://Assets/2D/Textures/Resources/TestResource.png" id="2_vixlf"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_aqy2r")
+shader_parameter/Texture2DParameter = ExtResource("2_vixlf")
+shader_parameter/Tint = Color(0.27999997, 1, 0.3879999, 1)
+shader_parameter/ResourceValue = 100.0
+shader_parameter/ResourceMax = 100.0

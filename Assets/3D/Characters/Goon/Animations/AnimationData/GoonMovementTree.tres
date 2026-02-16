@@ -1,0 +1,25 @@
+[gd_resource type="AnimationNodeBlendTree" format=3 uid="uid://c1r84ryetjupq"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i6csh"]
+animation = &"MoveBackward"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ya2oq"]
+animation = &"MoveForward"
+
+[sub_resource type="AnimationNodeBlend3" id="AnimationNodeBlend3_khe7m"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lrqxm"]
+animation = &"Standing"
+
+[resource]
+graph_offset = Vector2(-47.82074, 167.68164)
+nodes/output/position = Vector2(760, 200)
+nodes/Stand/node = SubResource("AnimationNodeAnimation_lrqxm")
+nodes/Stand/position = Vector2(100, 280)
+nodes/MoveBlend/node = SubResource("AnimationNodeBlend3_khe7m")
+nodes/MoveBlend/position = Vector2(340, 220)
+nodes/Back/node = SubResource("AnimationNodeAnimation_i6csh")
+nodes/Back/position = Vector2(100, 100)
+nodes/Forward/node = SubResource("AnimationNodeAnimation_ya2oq")
+nodes/Forward/position = Vector2(100, 460)
+node_connections = [&"output", 0, &"MoveBlend", &"MoveBlend", 0, &"Back", &"MoveBlend", 1, &"Stand", &"MoveBlend", 2, &"Forward"]

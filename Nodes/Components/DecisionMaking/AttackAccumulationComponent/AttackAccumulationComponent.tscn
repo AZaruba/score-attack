@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dn710m0vrmb4y"]
+
+[ext_resource type="Script" uid="uid://cyljkbh88irf0" path="res://Nodes/Components/DecisionMaking/AttackAccumulationComponent/AttackAccumulationComponent.cs" id="1_7s7my"]
+
+[node name="AttackAccumulationComponent" type="Node" unique_id=670906363]
+script = ExtResource("1_7s7my")

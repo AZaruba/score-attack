@@ -6,21 +6,25 @@
 [ext_resource type="PackedScene" uid="uid://cp6uncd35dj4c" path="res://Nodes/Components/Gravity/GravityComponent.tscn" id="3_1wx2c"]
 [ext_resource type="PackedScene" uid="uid://cn4aldc6nt85a" path="res://Nodes/Components/Rotation/RotationComponent.tscn" id="4_l1vh2"]
 [ext_resource type="PackedScene" uid="uid://cksgfveucfj1w" path="res://Nodes/Components/Health/HealthComponent.tscn" id="5_2lime"]
-[ext_resource type="PackedScene" uid="uid://ci5hvlkkqrvdf" path="res://Assets/3D/Characters/Scorecharacter/DemoChar.tscn" id="6_pysn0"]
 [ext_resource type="PackedScene" uid="uid://cfkd85rouw0ll" path="res://Nodes/Components/StateMachine/StateMachineComponent.tscn" id="7_saug5"]
+[ext_resource type="PackedScene" uid="uid://dn710m0vrmb4y" path="res://Nodes/Components/DecisionMaking/AttackAccumulationComponent/AttackAccumulationComponent.tscn" id="8_mmog5"]
+[ext_resource type="PackedScene" uid="uid://dptsf72m4yl4s" path="res://Assets/3D/Characters/Goon/GoonModel.tscn" id="8_saug5"]
+[ext_resource type="PackedScene" uid="uid://d32usgoovwt3a" path="res://Nodes/Components/Health/EnemyHealthbar/EnemyHealthbar.tscn" id="10_xugtf"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1wx2c"]
 
-[node name="Goon" type="CharacterBody3D" unique_id=1804750191 node_paths=PackedStringArray("NavigationAgent", "AnimatingBodyComponent", "VelocityComponent", "RotationComponent", "GravityComponent", "HealthComponent", "StateComponent")]
+[node name="Goon" type="CharacterBody3D" unique_id=1804750191 node_paths=PackedStringArray("NavigationAgent", "AnimatingBodyComponent", "VelocityComponent", "RotationComponent", "GravityComponent", "HealthComponent", "StateComponent", "AttackAccumulationComponent", "HealthBar")]
 collision_layer = 4
 script = ExtResource("1_s5nfe")
 NavigationAgent = NodePath("NavigationAgent3D")
-AnimatingBodyComponent = NodePath("DemoChar")
+AnimatingBodyComponent = NodePath("GoonModel")
 VelocityComponent = NodePath("VelocityComponent")
 RotationComponent = NodePath("RotationComponent")
 GravityComponent = NodePath("GravityComponent")
 HealthComponent = NodePath("HealthComponent")
 StateComponent = NodePath("StateMachineComponent")
+AttackAccumulationComponent = NodePath("AttackAccumulationComponent")
+HealthBar = NodePath("EnemyHealthbar")
 Stats = ExtResource("2_1wx2c")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=473046625]
@@ -36,6 +40,11 @@ target_desired_distance = 5.0
 
 [node name="StateMachineComponent" parent="." unique_id=998481345 instance=ExtResource("7_saug5")]
 
+[node name="AttackAccumulationComponent" parent="." unique_id=670906363 instance=ExtResource("8_mmog5")]
+DamageThreshold = 30.0
+DecayRate = 5.0
+ThresholdCommand = 10
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=657765910]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_1wx2c")
@@ -48,7 +57,10 @@ collision_mask = 32
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_1wx2c")
 
-[node name="DemoChar" parent="." unique_id=1649287524 instance=ExtResource("6_pysn0")]
+[node name="GoonModel" parent="." unique_id=1649287524 instance=ExtResource("8_saug5")]
+
+[node name="EnemyHealthbar" parent="." unique_id=2106629717 instance=ExtResource("10_xugtf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2, -0.2886449)
 
 [connection signal="link_reached" from="NavigationAgent3D" to="." method="OnLinkReached"]
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="OnTargetReached"]

@@ -12,9 +12,11 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lc4lg"]
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jwjeh"]
+
 [node name="PlayerCharacter" type="CharacterBody3D" unique_id=73598226 node_paths=PackedStringArray("InputComponent", "VelocityComponent", "RotationComponent", "GravityComponent", "HealthComponent", "StateComponent", "AnimatingBodyComponent")]
 physics_interpolation_mode = 1
-collision_mask = 13
+collision_mask = 77
 floor_constant_speed = true
 script = ExtResource("1_lm4g0")
 InputComponent = NodePath("InputComponent")
@@ -44,4 +46,14 @@ Gravity = 9.8
 [node name="StateMachineComponent" parent="." unique_id=998481345 instance=ExtResource("8_50f7y")]
 
 [node name="DemoChar" parent="." unique_id=476416424 instance=ExtResource("9_jwjeh")]
-AdvanceExpressionBaseNode = NodePath("..")
+
+[node name="HurtArea" type="Area3D" parent="." unique_id=1616964325]
+collision_layer = 128
+collision_mask = 64
+
+[node name="Hurtshape" type="CollisionShape3D" parent="HurtArea" unique_id=1855078408]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_jwjeh")
+debug_color = Color(0.81965595, 0.0018179948, 0.9683787, 0.41960785)
+
+[connection signal="area_entered" from="HurtArea" to="." method="OnHitByAttack"]

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://d32usgoovwt3a"]
+
+[ext_resource type="Script" uid="uid://jgldc7dcsyfg" path="res://Nodes/Components/Health/EnemyHealthbar/WorldResourceBar.cs" id="1_4hs4n"]
+[ext_resource type="Shader" uid="uid://dr6cqhmd8604a" path="res://Assets/2D/Textures/Resources/WorldResource/WorldResourceShader.gdshader" id="2_il3wt"]
+[ext_resource type="Texture2D" uid="uid://cgajtyx7aosqa" path="res://Assets/2D/Textures/Resources/TestResource.png" id="3_bp1dl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iwyyr"]
+render_priority = 0
+shader = ExtResource("2_il3wt")
+shader_parameter/Texture2DParameter = ExtResource("3_bp1dl")
+shader_parameter/Tint = Color(0.27999997, 1, 0.3879999, 1)
+shader_parameter/ResourceValue = 82.58
+shader_parameter/ResourceMax = 100.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_4hs4n"]
+size = Vector2(1, 0.2)
+
+[node name="EnemyHealthbar" type="Node3D" unique_id=2106629717]
+visible = false
+script = ExtResource("1_4hs4n")
+ResourceMat = SubResource("ShaderMaterial_iwyyr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=490566552]
+mesh = SubResource("QuadMesh_4hs4n")
+surface_material_override/0 = SubResource("ShaderMaterial_iwyyr")

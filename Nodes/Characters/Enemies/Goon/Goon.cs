@@ -2,7 +2,6 @@ using Godot;
 using StateManagement;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 public partial class Goon : CharacterBody3D
 {
@@ -13,11 +12,16 @@ public partial class Goon : CharacterBody3D
   [Export] GravityComponent GravityComponent;
   [Export] HealthComponent HealthComponent;
   [Export] StateMachineComponent StateComponent;
+  [Export] AttackAccumulationComponent AttackAccumulationComponent;
+  [Export] WorldResourceBar HealthBar;
   [Export] CharacterStats Stats;
 
   // is this necessary if the game manager already knows the player state? (Stealth/last known position?)
   //[Signal] public delegate void RequestPlayerPositionEventHandler()
   private Dictionary<StateID, Action<float>> StateActions;
+
+  // will each state have much more complicated reactions to getting hit?
+  //private Dictionary<StateID, Action<float>> StateOnHitByAttackActions;
 
   private Vector3 NextTarget;
   private bool IsMovingToLink = false;
@@ -26,6 +30,8 @@ public partial class Goon : CharacterBody3D
   public override void _Ready()
   {;
     HealthComponent.InitHealth(Stats.MaxHealth);
+    HealthBar.SetResourceMax(HealthComponent.GetCurrentHealth());
+    HealthBar.SetResourceValue(HealthComponent.GetCurrentHealth());
     InitStateMachine();
     InitSignals();
   }
@@ -43,18 +49,24 @@ public partial class Goon : CharacterBody3D
       { StateID.ORBITING, OrbitingState },
       { StateID.ENGAGING, EngagingState },
       { StateID.ATTACKING, AttackingState },
-      { StateID.HIT_BY_ATTACK, HitRecoveryState }
+      { StateID.HIT_BY_ATTACK, HitRecoveryState },
+      { StateID.BLOCKING, BlockingState }
     };
     StateComponent.AddState(StateID.APPROACHING);
     StateComponent.AddState(StateID.ORBITING);
     StateComponent.AddState(StateID.ENGAGING);
     StateComponent.AddState(StateID.ATTACKING);
+    StateComponent.AddState(StateID.BLOCKING);
     StateComponent.AddState(StateID.HIT_BY_ATTACK);
     StateComponent.AddTransitionToState(StateID.APPROACHING, Command.ORBIT, StateID.ORBITING);
     StateComponent.AddTransitionToState(StateID.ORBITING, Command.ENGAGE, StateID.ENGAGING);
     StateComponent.AddTransitionToState(StateID.ENGAGING, Command.START_ATTACK, StateID.ATTACKING); // 
     StateComponent.AddTransitionToState(StateID.ATTACKING, Command.FINISH_ATTACK, StateID.ENGAGING);
     StateComponent.AddTransitionToState(StateID.ENGAGING, Command.DISENGAGE, StateID.ORBITING);
+    StateComponent.AddTransitionToState(StateID.HIT_BY_ATTACK, Command.RECOVER_FROM_HIT, StateID.ENGAGING);
+    StateComponent.AddTransitionToState(StateID.HIT_BY_ATTACK, Command.BLOCK, StateID.BLOCKING);
+    StateComponent.AddTransitionToState(StateID.BLOCKING, Command.START_ATTACK, StateID.ATTACKING);
+    StateComponent.AddTransitionToState(StateID.BLOCKING, Command.UNBLOCK, StateID.ORBITING);
     StateComponent.AddTransitionToAllStates(Command.GET_HIT, StateID.HIT_BY_ATTACK, [StateID.BLOCKING]);
     StateComponent.Enter(StateID.APPROACHING);
   }
@@ -62,11 +74,15 @@ public partial class Goon : CharacterBody3D
   private void InitSignals()
   {
     HealthComponent.OnHealthZero += OnHealthZero;
+    AnimatingBodyComponent.OnCurrentAnimationFinished += OnCurrentAnimationFinished;
+    AttackAccumulationComponent.OnThresholdExceeded += OnAttackDamageThresholdHit;
   }
 
   private void TeardownSignals()
   {
     HealthComponent.OnHealthZero -= OnHealthZero;
+    AnimatingBodyComponent.OnCurrentAnimationFinished -= OnCurrentAnimationFinished;
+    AttackAccumulationComponent.OnThresholdExceeded -= OnAttackDamageThresholdHit;
   }
 
   public override void _PhysicsProcess(double delta)
@@ -74,7 +90,6 @@ public partial class Goon : CharacterBody3D
     RunStateMachineFunction(StateActions[StateComponent.GetCurrentState()], (float)delta);
     UpdateStateMachine();
     DebugLog.Log(StateComponent.GetCurrentState().ToString(), 0);
-    DebugLog.Log($"Target Position: {NavigationAgent.TargetPosition}", 1);
   }
 
   private void OnLinkReached(Godot.Collections.Dictionary details)
@@ -91,8 +106,17 @@ public partial class Goon : CharacterBody3D
 
   private void OnHitByAttack(Node3D AttackNode)
   {
-    GD.Print("hit");
-    HealthComponent.Damage(10);
+    DebugLog.LogTemp("Got Hit", 2);
+    // TODO: investigate simply setting a flag for "eligible for hit"
+    if (StateComponent.GetCurrentState() != StateID.BLOCKING)
+    {
+      HealthComponent.Damage(10);
+      HealthBar.RevealHealthBar();
+      HealthBar.SetResourceValue(HealthComponent.GetCurrentHealth());
+      AnimatingBodyComponent.TravelTo("HitStun");
+    }
+    AttackAccumulationComponent.AddDamage(10);
+    StateComponent.RunCommand(Command.GET_HIT);
   }
 
   private void OnHealthZero()
@@ -100,6 +124,28 @@ public partial class Goon : CharacterBody3D
     // TODO: return to object pool
     QueueFree();
   }
+
+  private void OnCurrentAnimationFinished()
+  {
+    // TODO: make this smarter
+    StateComponent.RunCommand(Command.RECOVER_FROM_HIT);
+    StateComponent.RunCommand(Command.FINISH_ATTACK);
+  }
+
+  private void OnAttackDamageThresholdHit(int cmd)
+  {
+    if (StateComponent.GetCurrentState() == StateID.BLOCKING)
+    {
+      StateComponent.RunCommand(Command.START_ATTACK);
+      AnimatingBodyComponent.TravelTo("Punch");
+    }
+    else
+    {
+      StateComponent.RunCommand((Command)cmd);
+      AnimatingBodyComponent.TravelTo("Block");
+    }
+  }
+
   public void RunStateMachineFunction(Action<float> StateFunction, float delta)
   {
     StateFunction(delta);
@@ -111,6 +157,7 @@ public partial class Goon : CharacterBody3D
     {
       StateComponent.RunCommand(Command.ORBIT);
     }
+    AnimatingBodyComponent.SetCurrentState(StateComponent.GetCurrentState());
   }
 
   public void UpdateTargetPosition(Vector3 position)
@@ -165,7 +212,6 @@ public partial class Goon : CharacterBody3D
     // pick a direction, I guess clockwise for testing
     Vector3 OrbitTarget = CurrentOffset.Rotated(Vector3.Up, Mathf.DegToRad(Stats.RotationRate)) + NavigationAgent.TargetPosition;
     VelocityComponent.AddForce((OrbitTarget - Position).Normalized() * Stats.MoveAcceleration);
-    DebugLog.Log($"Orbit Dest {(OrbitTarget - Position).ToString()}", 2);
     
     float ToAngle = Basis.Z.SignedAngleTo(CurrentOffset * -1, Vector3.Up);
     Basis = RotationComponent.RotateBasisR(Basis, Vector3.Up, ToAngle);
@@ -194,6 +240,11 @@ public partial class Goon : CharacterBody3D
   }
 
   private void HitRecoveryState(float delta)
+  {
+    
+  }
+
+  private void BlockingState(float delta)
   {
     
   }

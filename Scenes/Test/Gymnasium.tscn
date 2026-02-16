@@ -34,6 +34,6 @@ Target = NodePath("../PlayerCharacter")
 [node name="Gym" parent="." unique_id=442243274 instance=ExtResource("3_kf4nt")]
 
 [node name="Goon" parent="." unique_id=1804750191 instance=ExtResource("4_kf4nt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 5, -12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2374482, 1.1762462, -12)
 
 [node name="Hud" parent="." unique_id=775123952 instance=ExtResource("5_dree5")]

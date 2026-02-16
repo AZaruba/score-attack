@@ -72,6 +72,9 @@ Jump={
 3d_physics/layer_4="Enemy"
 3d_physics/layer_5="Item"
 3d_physics/layer_6="Hitbox"
+3d_physics/layer_7="EnemyHitbox"
+3d_physics/layer_8="PlayerHurtbox"
+3d_physics/layer_9="EnemyHurtbox"
 
 [physics]
 

@@ -31,6 +31,7 @@ namespace StateManagement
     START_ATTACK,
     FINISH_ATTACK,
     GET_HIT,
+    RECOVER_FROM_HIT,
     BLOCK,
     UNBLOCK,
     APPROACH,
