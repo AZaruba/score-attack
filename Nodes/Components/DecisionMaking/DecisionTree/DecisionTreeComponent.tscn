@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://14a5r37nioav"]
+
+[ext_resource type="Script" uid="uid://d0jmpsqbxaejh" path="res://Nodes/Components/DecisionMaking/DecisionTree/DecisionTreeComponent.cs" id="1_pa28u"]
+
+[node name="DecisionTreeComponent" type="Node" unique_id=226580645]
+script = ExtResource("1_pa28u")

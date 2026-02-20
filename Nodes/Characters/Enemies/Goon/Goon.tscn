@@ -10,10 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://dn710m0vrmb4y" path="res://Nodes/Components/DecisionMaking/AttackAccumulationComponent/AttackAccumulationComponent.tscn" id="8_mmog5"]
 [ext_resource type="PackedScene" uid="uid://dptsf72m4yl4s" path="res://Assets/3D/Characters/Goon/GoonModel.tscn" id="8_saug5"]
 [ext_resource type="PackedScene" uid="uid://d32usgoovwt3a" path="res://Nodes/Components/Health/EnemyHealthbar/EnemyHealthbar.tscn" id="10_xugtf"]
+[ext_resource type="PackedScene" uid="uid://14a5r37nioav" path="res://Nodes/Components/DecisionMaking/DecisionTree/DecisionTreeComponent.tscn" id="11_362qi"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1wx2c"]
 
-[node name="Goon" type="CharacterBody3D" unique_id=1804750191 node_paths=PackedStringArray("NavigationAgent", "AnimatingBodyComponent", "VelocityComponent", "RotationComponent", "GravityComponent", "HealthComponent", "StateComponent", "AttackAccumulationComponent", "HealthBar")]
+[node name="Goon" type="CharacterBody3D" unique_id=1804750191 node_paths=PackedStringArray("NavigationAgent", "AnimatingBodyComponent", "VelocityComponent", "RotationComponent", "GravityComponent", "HealthComponent", "StateComponent", "DecisionTreeComponent", "AttackAccumulationComponent", "HealthBar")]
 collision_layer = 4
 script = ExtResource("1_s5nfe")
 NavigationAgent = NodePath("NavigationAgent3D")
@@ -23,6 +24,7 @@ RotationComponent = NodePath("RotationComponent")
 GravityComponent = NodePath("GravityComponent")
 HealthComponent = NodePath("HealthComponent")
 StateComponent = NodePath("StateMachineComponent")
+DecisionTreeComponent = NodePath("DecisionTreeComponent")
 AttackAccumulationComponent = NodePath("AttackAccumulationComponent")
 HealthBar = NodePath("EnemyHealthbar")
 Stats = ExtResource("2_1wx2c")
@@ -61,6 +63,8 @@ shape = SubResource("CapsuleShape3D_1wx2c")
 
 [node name="EnemyHealthbar" parent="." unique_id=2106629717 instance=ExtResource("10_xugtf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2, -0.2886449)
+
+[node name="DecisionTreeComponent" parent="." unique_id=226580645 instance=ExtResource("11_362qi")]
 
 [connection signal="link_reached" from="NavigationAgent3D" to="." method="OnLinkReached"]
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="OnTargetReached"]

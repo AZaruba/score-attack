@@ -11,10 +11,12 @@ public partial class Goon : CharacterBody3D
   [Export] RotationComponent RotationComponent;
   [Export] GravityComponent GravityComponent;
   [Export] HealthComponent HealthComponent;
-  [Export] StateMachineComponent StateComponent;
+  [Export] DecisionTreeComponent DecisionTreeComponent;
   [Export] AttackAccumulationComponent AttackAccumulationComponent;
   [Export] WorldResourceBar HealthBar;
   [Export] CharacterStats Stats;
+
+  private StateID LastDecisionState;
 
   // is this necessary if the game manager already knows the player state? (Stealth/last known position?)
   //[Signal] public delegate void RequestPlayerPositionEventHandler()
@@ -52,23 +54,33 @@ public partial class Goon : CharacterBody3D
       { StateID.HIT_BY_ATTACK, HitRecoveryState },
       { StateID.BLOCKING, BlockingState }
     };
-    StateComponent.AddState(StateID.APPROACHING);
-    StateComponent.AddState(StateID.ORBITING);
-    StateComponent.AddState(StateID.ENGAGING);
-    StateComponent.AddState(StateID.ATTACKING);
-    StateComponent.AddState(StateID.BLOCKING);
-    StateComponent.AddState(StateID.HIT_BY_ATTACK);
-    StateComponent.AddTransitionToState(StateID.APPROACHING, Command.ORBIT, StateID.ORBITING);
-    StateComponent.AddTransitionToState(StateID.ORBITING, Command.ENGAGE, StateID.ENGAGING);
-    StateComponent.AddTransitionToState(StateID.ENGAGING, Command.START_ATTACK, StateID.ATTACKING); // 
-    StateComponent.AddTransitionToState(StateID.ATTACKING, Command.FINISH_ATTACK, StateID.ENGAGING);
-    StateComponent.AddTransitionToState(StateID.ENGAGING, Command.DISENGAGE, StateID.ORBITING);
-    StateComponent.AddTransitionToState(StateID.HIT_BY_ATTACK, Command.RECOVER_FROM_HIT, StateID.ENGAGING);
-    StateComponent.AddTransitionToState(StateID.HIT_BY_ATTACK, Command.BLOCK, StateID.BLOCKING);
-    StateComponent.AddTransitionToState(StateID.BLOCKING, Command.START_ATTACK, StateID.ATTACKING);
-    StateComponent.AddTransitionToState(StateID.BLOCKING, Command.UNBLOCK, StateID.ORBITING);
-    StateComponent.AddTransitionToAllStates(Command.GET_HIT, StateID.HIT_BY_ATTACK, [StateID.BLOCKING]);
-    StateComponent.Enter(StateID.APPROACHING);
+
+    // Decision Tree version
+    DecisionTreeComponent.AddBranch(DecisionID.TARGET_IS_NOTICED);
+    DecisionTreeComponent.AddBranch(DecisionID.IDLE); // currently will never get here
+    DecisionTreeComponent.AddBranch(DecisionID.TARGET_IN_RANGE, DecisionID.TARGET_IS_NOTICED);
+    DecisionTreeComponent.AddBranch(DecisionID.TARGET_NOT_IN_RANGE, DecisionID.TARGET_IS_NOTICED);
+    DecisionTreeComponent.AddStateLeaf(StateID.GROUNDED, DecisionID.IDLE);
+    DecisionTreeComponent.AddStateLeaf(StateID.APPROACHING, DecisionID.TARGET_NOT_IN_RANGE);
+    DecisionTreeComponent.AddStateLeaf(StateID.ORBITING, DecisionID.TARGET_IN_RANGE);
+    DecisionTreeComponent.SetBehavior(IsTargetNoticed, DecisionID.ROOT);
+    DecisionTreeComponent.SetBehavior(IsTargetInRange, DecisionID.TARGET_IS_NOTICED);
+
+
+  }
+
+  public DecisionID IsTargetNoticed()
+  {
+    return DecisionID.TARGET_IS_NOTICED;
+  }
+
+  public DecisionID IsTargetInRange()
+  {
+    if (Arrived)
+    {
+      return DecisionID.TARGET_IN_RANGE;
+    }
+    return DecisionID.TARGET_NOT_IN_RANGE;
   }
 
   private void InitSignals()
@@ -87,9 +99,10 @@ public partial class Goon : CharacterBody3D
 
   public override void _PhysicsProcess(double delta)
   {
-    RunStateMachineFunction(StateActions[StateComponent.GetCurrentState()], (float)delta);
-    UpdateStateMachine();
-    DebugLog.Log(StateComponent.GetCurrentState().ToString(), 0);
+    LastDecisionState = DecisionTreeComponent.MakeDecision();
+    RunStateMachineFunction(StateActions[LastDecisionState], (float)delta);
+    // UpdateStateMachine();
+    DebugLog.Log(LastDecisionState.ToString(), 0);
   }
 
   private void OnLinkReached(Godot.Collections.Dictionary details)
@@ -108,7 +121,7 @@ public partial class Goon : CharacterBody3D
   {
     DebugLog.LogTemp("Got Hit", 2);
     // TODO: investigate simply setting a flag for "eligible for hit"
-    if (StateComponent.GetCurrentState() != StateID.BLOCKING)
+    if (LastDecisionState != StateID.BLOCKING)
     {
       HealthComponent.Damage(10);
       HealthBar.RevealHealthBar();
@@ -116,7 +129,7 @@ public partial class Goon : CharacterBody3D
       AnimatingBodyComponent.TravelTo("HitStun");
     }
     AttackAccumulationComponent.AddDamage(10);
-    StateComponent.RunCommand(Command.GET_HIT);
+    //StateComponent.RunCommand(Command.GET_HIT);
   }
 
   private void OnHealthZero()
@@ -128,20 +141,20 @@ public partial class Goon : CharacterBody3D
   private void OnCurrentAnimationFinished()
   {
     // TODO: make this smarter
-    StateComponent.RunCommand(Command.RECOVER_FROM_HIT);
-    StateComponent.RunCommand(Command.FINISH_ATTACK);
+    // StateComponent.RunCommand(Command.RECOVER_FROM_HIT);
+    // StateComponent.RunCommand(Command.FINISH_ATTACK);
   }
 
   private void OnAttackDamageThresholdHit(int cmd)
   {
-    if (StateComponent.GetCurrentState() == StateID.BLOCKING)
+    if (LastDecisionState == StateID.BLOCKING)
     {
-      StateComponent.RunCommand(Command.START_ATTACK);
+      //StateComponent.RunCommand(Command.START_ATTACK);
       AnimatingBodyComponent.TravelTo("Punch");
     }
     else
     {
-      StateComponent.RunCommand((Command)cmd);
+      //StateComponent.RunCommand((Command)cmd);
       AnimatingBodyComponent.TravelTo("Block");
     }
   }
@@ -151,14 +164,14 @@ public partial class Goon : CharacterBody3D
     StateFunction(delta);
   }
 
-  private void UpdateStateMachine()
-  {
-    if (Arrived)
-    {
-      StateComponent.RunCommand(Command.ORBIT);
-    }
-    AnimatingBodyComponent.SetCurrentState(StateComponent.GetCurrentState());
-  }
+  // private void UpdateStateMachine()
+  // {
+  //   if (Arrived)
+  //   {
+  //     StateComponent.RunCommand(Command.ORBIT);
+  //   }
+  //   AnimatingBodyComponent.SetCurrentState(StateComponent.GetCurrentState());
+  // }
 
   public void UpdateTargetPosition(Vector3 position)
   {
