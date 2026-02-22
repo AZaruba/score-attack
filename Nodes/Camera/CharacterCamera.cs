@@ -4,28 +4,31 @@ public partial class CharacterCamera : Camera3D
 {
   [Export] private Node3D Target;
   [Export] private VelocityComponent VelocityComponent;
+  [Export] private RotationComponent RotationComponent;
   [Export] private CameraStats Stats;
+
+  private Vector3 DesiredPosition;
+  private Basis DesiredRotation;
+  private float DesiredDistance;
 
   public override void _Ready()
   {
     Position = Target.Position + Target.Basis.GetRotationQuaternion() * Stats.DistanceToTarget;
     Transform = Transform.LookingAt(Target.Position + Target.Basis.GetRotationQuaternion() * Stats.TargetOffset, Vector3.Up);
-    
   }
 
   // TODO: component-ize this
   public override void _PhysicsProcess(double delta)
   {
-    // Rotate offset Vector, 
-    Vector3 CurrentOffset = Position - Target.Position;
-    CurrentOffset.Y = Stats.DistanceToTarget.Y;
-    Vector3 TargetOffset = Target.Basis.GetRotationQuaternion() * Stats.DistanceToTarget;
-    TargetOffset.Y = Stats.DistanceToTarget.Y;
-    float Rate = Mathf.Clamp(CurrentOffset.SignedAngleTo(TargetOffset, Vector3.Up), Stats.TurnCorrectionRate * -1 * (float)delta, Stats.TurnCorrectionRate * (float)delta);
-    Position = Target.Position + CurrentOffset.Rotated(Vector3.Up, Rate);
+    Vector3 FlatTargetPosition = Target.Position;
+    DesiredPosition = FlatTargetPosition + Target.Basis.GetRotationQuaternion() * Stats.DistanceToTarget;
+    DesiredRotation = Basis.LookingAt(FlatTargetPosition + Target.Basis.GetRotationQuaternion() * Stats.TargetOffset - Position);
+    Basis = DesiredRotation;
 
-    // move toward
-    Position = Position.MoveToward(Target.Position + TargetOffset, (float)delta * Stats.MovementRate);
-    Transform = Transform.LookingAt(Target.Position + Target.Basis.GetRotationQuaternion() * Stats.TargetOffset, Vector3.Up);
+    VelocityComponent.AddForce((DesiredPosition - Position).Normalized() * Stats.MovementAcceleration);
+    VelocityComponent.CapVelocity(Position.DistanceTo(DesiredPosition)/Stats.DistanceToTarget.Length() * Stats.MovementRate);
+    
+    Position += VelocityComponent.GetCurrentVelocity() * (float)delta;
+
   }
 }

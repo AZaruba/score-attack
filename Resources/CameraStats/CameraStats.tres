@@ -4,7 +4,10 @@
 
 [resource]
 script = ExtResource("1_3njy2")
-TargetOffset = Vector3(-1.5, 1.5, 0)
-DistanceToTarget = Vector3(-1.5, 1.5, -3)
+TargetOffset = Vector3(-1, 1.5, 0)
+DistanceToTarget = Vector3(-1, 1.5, -3)
+HeightOffGround = 1.5
 TurnCorrectionRate = 10.0
-MovementRate = 6.0
+TurnCorrectionAcceleration = 5.0
+MovementRate = 60.0
+MovementAcceleration = 60.0

@@ -3,10 +3,14 @@
 [ext_resource type="Script" uid="uid://ck2nr6k2esl2k" path="res://Nodes/Camera/CharacterCamera.cs" id="1_lgsoq"]
 [ext_resource type="Resource" uid="uid://bv1uqhuy6ddu" path="res://Resources/CameraStats/CameraStats.tres" id="2_cpbnf"]
 [ext_resource type="PackedScene" uid="uid://cs8ovhje8kw8m" path="res://Nodes/Components/Velocity/VelocityComponent.tscn" id="3_o16he"]
+[ext_resource type="PackedScene" uid="uid://cn4aldc6nt85a" path="res://Nodes/Components/Rotation/RotationComponent.tscn" id="4_o16he"]
 
-[node name="Camera3D" type="Camera3D" unique_id=1180286763 node_paths=PackedStringArray("VelocityComponent")]
+[node name="Camera3D" type="Camera3D" unique_id=1180286763 node_paths=PackedStringArray("VelocityComponent", "RotationComponent")]
 script = ExtResource("1_lgsoq")
 VelocityComponent = NodePath("VelocityComponent")
+RotationComponent = NodePath("RotationComponent")
 Stats = ExtResource("2_cpbnf")
 
 [node name="VelocityComponent" parent="." unique_id=600546887 instance=ExtResource("3_o16he")]
+
+[node name="RotationComponent" parent="." unique_id=1893574452 instance=ExtResource("4_o16he")]

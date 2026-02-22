@@ -26,6 +26,7 @@ public partial class PlayerCharacterController : CharacterBody3D
   {
     InitStateMachine();
     InitSignals();
+    RotationComponent.SetAxis(Vector3.Up);
     HealthComponent.InitHealth(Stats.MaxHealth);
     EmitSignal(SignalName.OnPlayerMaxHealthUpdate, HealthComponent.GetMaxHealth());
     EmitSignal(SignalName.OnPlayerHealthUpdate, HealthComponent.GetMaxHealth());
@@ -143,7 +144,10 @@ public partial class PlayerCharacterController : CharacterBody3D
     }
 
     // process Rotation
-    Basis = RotationComponent.RotateBasis(Basis, Vector3.Up, Stats.RotationRate * (float)delta * InputComponent.GetStrafeInput() * -1);
+    float RotationInput = Mathf.DegToRad(Stats.RotationAcceleration) * InputComponent.GetStrafeInput() * -1;
+    RotationComponent.AddRotationForce(RotationInput);
+    RotationComponent.CapRotationForce(Mathf.DegToRad(Stats.RotationRate));
+    Basis = RotationComponent.RotateBasis(Basis, delta);
 
     //Animate 
     AnimatingBodyComponent.SetAnimationParameter(PCAnimationNames.MoveBlendPath, InputComponent.GetMoveInput());

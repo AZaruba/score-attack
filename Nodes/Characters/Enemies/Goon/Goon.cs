@@ -164,15 +164,6 @@ public partial class Goon : CharacterBody3D
     StateFunction(delta);
   }
 
-  // private void UpdateStateMachine()
-  // {
-  //   if (Arrived)
-  //   {
-  //     StateComponent.RunCommand(Command.ORBIT);
-  //   }
-  //   AnimatingBodyComponent.SetCurrentState(StateComponent.GetCurrentState());
-  // }
-
   public void UpdateTargetPosition(Vector3 position)
   {
     NavigationAgent.TargetPosition = position;
@@ -222,8 +213,12 @@ public partial class Goon : CharacterBody3D
     VelocityComponent.SetVelocity(Vector3.Zero);
 
     Vector3 CurrentOffset = Position - NavigationAgent.TargetPosition;
-    // pick a direction, I guess clockwise for testing
-    Vector3 OrbitTarget = CurrentOffset.Rotated(Vector3.Up, Mathf.DegToRad(Stats.RotationRate)) + NavigationAgent.TargetPosition;
+
+    // the orbit target should be an open position within the field of view
+    Vector3 OrbitTarget = NavigationAgent.TargetPosition + -GetViewport().GetCamera3D().Basis.Z * NavigationAgent.TargetDesiredDistance;
+    // Rotate Orbit Target by random amount on enter?
+    //OrbitTarget = OrbitTarget.Rotated(Vector3.Up, (float)GD.RandRange(-0.1f, 0.1f));
+
     VelocityComponent.AddForce((OrbitTarget - Position).Normalized() * Stats.MoveAcceleration);
     
     float ToAngle = Basis.Z.SignedAngleTo(CurrentOffset * -1, Vector3.Up);
@@ -236,7 +231,7 @@ public partial class Goon : CharacterBody3D
       VelocityComponent.AddForce((CurrentOffset.Length() - NavigationAgent.TargetDesiredDistance) * -1 * Stats.MoveSpeed * CurrentOffset);
     }
 
-    VelocityComponent.CapVelocity(Stats.MoveSpeed);
+    VelocityComponent.CapVelocity(Mathf.Min(Stats.MoveSpeed, Position.DistanceTo(OrbitTarget)));
     Velocity = VelocityComponent.GetCurrentVelocity() + GravityComponent.GetVerticalVelocity();
     MoveAndSlide();
 
