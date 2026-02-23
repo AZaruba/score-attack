@@ -84,9 +84,10 @@ albedo_color = Color(0.43137255, 0, 0, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_3jmqv"]
 radius = 0.25
 
-[node name="GoonModel" unique_id=1649287524 node_paths=PackedStringArray("AnimationTreeComponent") instance=ExtResource("1_4uxmm")]
+[node name="GoonModel" unique_id=1649287524 node_paths=PackedStringArray("AnimationTreeComponent", "AnimationPlayerComponent") instance=ExtResource("1_4uxmm")]
 script = ExtResource("2_epdyk")
 AnimationTreeComponent = NodePath("AnimationTree")
+AnimationPlayerComponent = NodePath("AnimationPlayer")
 AnimationTransitionReady = true
 
 [node name="Skeleton3D" parent="CharacterArm" parent_id_path=PackedInt32Array(1223657699) index="0" unique_id=1931878502]

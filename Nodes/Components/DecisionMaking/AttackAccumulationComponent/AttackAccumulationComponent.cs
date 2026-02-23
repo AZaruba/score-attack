@@ -4,7 +4,7 @@ using System;
 
 public partial class AttackAccumulationComponent : Node
 {
-  [Export] float DamageThreshold; // do we want multiple?
+  [Export] public float DamageThreshold; // do we want multiple?
   [Export] float DecayRate;
 
   [Export] Command ThresholdCommand;
@@ -19,7 +19,7 @@ public partial class AttackAccumulationComponent : Node
   }
   public override void _PhysicsProcess(double delta)
   {
-    DebugLog.Log(AccumulatedDamage.ToString(), 1);
+    //DebugLog.Log(AccumulatedDamage.ToString(), 1);
     if (AccumulatedDamage > DamageThreshold)
     {
       AccumulatedDamage = 0;

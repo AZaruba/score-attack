@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_m1w27")
-MoveSpeed = 6.0
+MoveSpeed = 5.0
 MoveAcceleration = 2.0
 RotationRate = 9.0
 JumpForce = 4.8
 Gravity = 8.0
 GroundFriction = 10.0
-MaxHealth = 200.0
+MaxHealth = 20.0

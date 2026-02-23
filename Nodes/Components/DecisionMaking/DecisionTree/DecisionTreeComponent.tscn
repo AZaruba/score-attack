@@ -2,5 +2,9 @@
 
 [ext_resource type="Script" uid="uid://d0jmpsqbxaejh" path="res://Nodes/Components/DecisionMaking/DecisionTree/DecisionTreeComponent.cs" id="1_pa28u"]
 
-[node name="DecisionTreeComponent" type="Node" unique_id=226580645]
+[node name="DecisionTreeComponent" type="Node" unique_id=226580645 node_paths=PackedStringArray("DecisionTimer")]
 script = ExtResource("1_pa28u")
+DecisionTimer = NodePath("Timer")
+
+[node name="Timer" type="Timer" parent="." unique_id=1661329436]
+one_shot = true

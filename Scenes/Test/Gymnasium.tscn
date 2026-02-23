@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cifntbeeljetl" path="res://Assets/3D/Environments/Gymnasium.tscn" id="3_kf4nt"]
 [ext_resource type="PackedScene" uid="uid://cn5fv7hjalxcn" path="res://Nodes/Characters/Enemies/Goon/Goon.tscn" id="4_kf4nt"]
 [ext_resource type="PackedScene" uid="uid://dllcxpkeyfwj5" path="res://Nodes/UI/HUD/HUD.tscn" id="5_dree5"]
+[ext_resource type="PackedScene" uid="uid://dhtwf4630v3sq" path="res://Nodes/LevelManagement/OpponentBuffer/OpponentBuffer.tscn" id="7_kdx3p"]
 
 [sub_resource type="Environment" id="Environment_okpsg"]
 background_mode = 1
@@ -13,12 +14,13 @@ background_color = Color(0.13049997, 0.5372252, 0.87, 1)
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 
-[node name="GameRoot" type="Node3D" unique_id=572831494 node_paths=PackedStringArray("HeadsUpDisplay", "PlayerCharacter", "TestGoon")]
+[node name="GameRoot" type="Node3D" unique_id=572831494 node_paths=PackedStringArray("HeadsUpDisplay", "PlayerCharacter", "TestGoon", "OpponentBuffer")]
 physics_interpolation_mode = 1
 script = ExtResource("1_j01n8")
 HeadsUpDisplay = NodePath("Hud")
 PlayerCharacter = NodePath("PlayerCharacter")
 TestGoon = NodePath("Goon")
+OpponentBuffer = NodePath("OpponentBuffer")
 
 [node name="PlayerCharacter" parent="." unique_id=73598226 instance=ExtResource("2_okpsg")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
@@ -37,3 +39,6 @@ Target = NodePath("../PlayerCharacter")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2374482, 1.1762462, -12)
 
 [node name="Hud" parent="." unique_id=775123952 instance=ExtResource("5_dree5")]
+
+[node name="OpponentBuffer" parent="." unique_id=884101507 node_paths=PackedStringArray("Opponents") instance=ExtResource("7_kdx3p")]
+Opponents = [NodePath("../Goon")]

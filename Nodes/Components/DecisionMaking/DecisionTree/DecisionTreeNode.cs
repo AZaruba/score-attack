@@ -11,6 +11,7 @@ public enum DecisionID
   TARGET_IN_RANGE,
   TARGET_NOT_IN_RANGE,
   WANT_TO_ENGAGE,
+  WANT_TO_CLOSE_IN,
   WANT_TO_APPROACH,
   WANT_TO_ORBIT,
   ENGAGING,
@@ -28,6 +29,7 @@ public class DecisionTreeNode<T>
 
   private DecisionID ID;
   private T Leaf;
+  private float LockTime = 0;
 
   public Func<DecisionID> Decision;
 
@@ -98,10 +100,11 @@ public class DecisionTreeNode<T>
     return false;
   }
   
-  public T GetBehavior()
+  public T GetBehavior(out float LockTime)
   {
     if (Branches.Count == 0)
     {
+      LockTime = this.LockTime;
       return Leaf;
     }
 
@@ -110,10 +113,32 @@ public class DecisionTreeNode<T>
     {
       if (ChildBranch.ID == decisionId)
       {
-        return ChildBranch.GetBehavior();
+        T output = ChildBranch.GetBehavior(out float ChildLockTime);
+        LockTime = ChildLockTime;
+        return output;
       }
     }
 
     throw new Exception("Decision Tree failed to reach a leaf");
+  }
+
+  public bool SetLockTime(float LockTime, DecisionID BranchID)
+  {
+    if (ID == BranchID)
+    {
+      this.LockTime = LockTime;
+      return true;
+    }
+    else
+    {
+      foreach(DecisionTreeNode<T> ChildBranch in Branches)
+      {
+        if (ChildBranch.SetLockTime(LockTime, BranchID))
+        {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }

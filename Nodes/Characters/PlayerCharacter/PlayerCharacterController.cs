@@ -146,14 +146,14 @@ public partial class PlayerCharacterController : CharacterBody3D
     // process Rotation
     float RotationInput = Mathf.DegToRad(Stats.RotationAcceleration) * InputComponent.GetStrafeInput() * -1;
     RotationComponent.AddRotationForce(RotationInput);
-    RotationComponent.CapRotationForce(Mathf.DegToRad(Stats.RotationRate));
+    RotationComponent.CapRotationForce(Mathf.DegToRad(Stats.RotationRate * Mathf.Abs(InputComponent.GetStrafeInput())));
     Basis = RotationComponent.RotateBasis(Basis, delta);
 
     //Animate 
     AnimatingBodyComponent.SetAnimationParameter(PCAnimationNames.MoveBlendPath, InputComponent.GetMoveInput());
     
     // Apply to Engine
-    VelocityComponent.CapVelocity(Stats.MoveSpeed);
+    VelocityComponent.CapVelocity(Stats.MoveSpeed * Mathf.Abs(InputComponent.GetMoveInput()));
     Velocity = VelocityComponent.GetCurrentVelocity() + GravityComponent.GetVerticalVelocity();
     MoveAndSlide();
   }

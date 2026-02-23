@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://dep5xaj4k7rdu"]
+
+[ext_resource type="Script" uid="uid://ccp7likd4h4uc" path="res://Resources/EnemyBehaviorStats/EnemyBehaviorStats.cs" id="1_tggru"]
+
+[resource]
+script = ExtResource("1_tggru")
+OrbitDistance = 3.0
+EngageDistance = 1.5
+GuardCounterThreshold = 10.0

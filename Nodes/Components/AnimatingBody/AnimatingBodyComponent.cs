@@ -5,6 +5,7 @@ using StateManagement;
 public partial class AnimatingBodyComponent : Node
 {
   [Export] AnimationTree AnimationTreeComponent;
+  [Export] AnimationPlayer AnimationPlayerComponent;
   [Export] bool AnimationTransitionReady;
 
   [Signal] public delegate void OnCurrentAnimationFinishedEventHandler();
@@ -30,6 +31,11 @@ public partial class AnimatingBodyComponent : Node
   public void PlayAnimationLoop(string AnimationName)
   {
     
+  }
+
+  public void DirectAnimationPlay(string AnimationName)
+  {
+    AnimationPlayerComponent.Play(AnimationName);
   }
 
   public void SetAnimationParameter(string Path, float Value)

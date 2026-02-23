@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dhtwf4630v3sq"]
+
+[ext_resource type="Script" uid="uid://bo7ypximi2s2v" path="res://Nodes/LevelManagement/OpponentBuffer/OpponentBuffer.cs" id="1_6lj5w"]
+
+[node name="OpponentBuffer" type="Node" unique_id=884101507]
+script = ExtResource("1_6lj5w")

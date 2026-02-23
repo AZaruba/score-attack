@@ -4,6 +4,7 @@
 [ext_resource type="Resource" uid="uid://c53odamcx4ief" path="res://Resources/CharacterStats/Enemies/GoonStats.tres" id="2_1wx2c"]
 [ext_resource type="PackedScene" uid="uid://cs8ovhje8kw8m" path="res://Nodes/Components/Velocity/VelocityComponent.tscn" id="2_tw5n5"]
 [ext_resource type="PackedScene" uid="uid://cp6uncd35dj4c" path="res://Nodes/Components/Gravity/GravityComponent.tscn" id="3_1wx2c"]
+[ext_resource type="Resource" uid="uid://dep5xaj4k7rdu" path="res://Resources/CharacterStats/Enemies/GoonBehaviorStats.tres" id="3_jvgvc"]
 [ext_resource type="PackedScene" uid="uid://cn4aldc6nt85a" path="res://Nodes/Components/Rotation/RotationComponent.tscn" id="4_l1vh2"]
 [ext_resource type="PackedScene" uid="uid://cksgfveucfj1w" path="res://Nodes/Components/Health/HealthComponent.tscn" id="5_2lime"]
 [ext_resource type="PackedScene" uid="uid://cfkd85rouw0ll" path="res://Nodes/Components/StateMachine/StateMachineComponent.tscn" id="7_saug5"]
@@ -14,7 +15,7 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1wx2c"]
 
-[node name="Goon" type="CharacterBody3D" unique_id=1804750191 node_paths=PackedStringArray("NavigationAgent", "AnimatingBodyComponent", "VelocityComponent", "RotationComponent", "GravityComponent", "HealthComponent", "StateComponent", "DecisionTreeComponent", "AttackAccumulationComponent", "HealthBar")]
+[node name="Goon" type="CharacterBody3D" unique_id=1804750191 node_paths=PackedStringArray("NavigationAgent", "AnimatingBodyComponent", "VelocityComponent", "RotationComponent", "GravityComponent", "DecisionTreeComponent", "AttackAccumulationComponent", "HealthBar", "HealthComponent")]
 collision_layer = 4
 script = ExtResource("1_s5nfe")
 NavigationAgent = NodePath("NavigationAgent3D")
@@ -22,15 +23,15 @@ AnimatingBodyComponent = NodePath("GoonModel")
 VelocityComponent = NodePath("VelocityComponent")
 RotationComponent = NodePath("RotationComponent")
 GravityComponent = NodePath("GravityComponent")
-HealthComponent = NodePath("HealthComponent")
-StateComponent = NodePath("StateMachineComponent")
 DecisionTreeComponent = NodePath("DecisionTreeComponent")
 AttackAccumulationComponent = NodePath("AttackAccumulationComponent")
 HealthBar = NodePath("EnemyHealthbar")
 Stats = ExtResource("2_1wx2c")
+BehaviorStats = ExtResource("3_jvgvc")
+HealthComponent = NodePath("HealthComponent")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=473046625]
-target_desired_distance = 5.0
+target_desired_distance = 3.0
 
 [node name="VelocityComponent" parent="." unique_id=600546887 instance=ExtResource("2_tw5n5")]
 

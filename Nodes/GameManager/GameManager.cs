@@ -5,7 +5,8 @@ public partial class GameManager : Node3D
 {
   [Export] HUD HeadsUpDisplay;
   [Export] PlayerCharacterController PlayerCharacter;
-  [Export] Goon TestGoon;
+  [Export] IOpponent TestGoon;
+  [Export] OpponentBuffer OpponentBuffer;
 
   // character pool
 
@@ -18,7 +19,7 @@ public partial class GameManager : Node3D
   public override void _PhysicsProcess(double delta)
   {
     base._PhysicsProcess(delta);
-    TestGoon.UpdateTargetPosition(PlayerCharacter.Position);
+    OpponentBuffer.UpdateTargetPosition(PlayerCharacter.Position);
   }
 
   public override void _ExitTree()
