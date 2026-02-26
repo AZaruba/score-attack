@@ -108,7 +108,6 @@ public partial class Goon : IOpponent
 
   public DecisionID SelectEngageAction()
   {
-    DebugLog.Log(Position.DistanceTo(NavigationAgent.TargetPosition).ToString(), 2);
     if (Position.DistanceTo(NavigationAgent.TargetPosition) <= BehaviorStats.EngageDistance)
     {
       AnimatingBodyComponent.DirectAnimationPlay("Punch");
@@ -142,7 +141,7 @@ public partial class Goon : IOpponent
     LastDecisionState = DecisionTreeComponent.MakeDecision();
     RunStateMachineFunction(StateActions[LastDecisionState], (float)delta);
     // UpdateStateMachine();
-    DebugLog.Log(LastDecisionState.ToString(), 0);
+    //DebugLog.Log(LastDecisionState.ToString(), 1);
   }
 
   private void OnLinkReached(Godot.Collections.Dictionary details)
@@ -255,7 +254,9 @@ public partial class Goon : IOpponent
 
     VelocityComponent.AddForce((OrbitTarget - Position).Normalized() * Stats.MoveAcceleration);
     
-    float ToAngle = Basis.Z.SignedAngleTo(CurrentOffset * -1, Vector3.Up);
+    Vector3 FlatOffset = CurrentOffset;
+    FlatOffset.Y = 0;
+    float ToAngle = Basis.Z.SignedAngleTo(FlatOffset * -1, Vector3.Up);
     Basis = RotationComponent.RotateBasisR(Basis, Vector3.Up, ToAngle);
 
     // close distance
@@ -286,7 +287,10 @@ public partial class Goon : IOpponent
 
     // Rotate Orbit Target by random amount on enter?
     
-    float ToAngle = Basis.Z.SignedAngleTo(CurrentOffset * -1, Vector3.Up);
+    CurrentOffset.Y = 0;
+    Vector3 FlatOffset = CurrentOffset;
+    FlatOffset.Y = 0;
+    float ToAngle = Basis.Z.SignedAngleTo(FlatOffset * -1, Vector3.Up);
     Basis = RotationComponent.RotateBasisR(Basis, Vector3.Up, ToAngle);
 
     // close distance

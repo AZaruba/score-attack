@@ -5,6 +5,7 @@ public partial class GameManager : Node3D
 {
   [Export] HUD HeadsUpDisplay;
   [Export] PlayerCharacterController PlayerCharacter;
+  [Export] CharacterCamera MainCamera;
   [Export] IOpponent TestGoon;
   [Export] OpponentBuffer OpponentBuffer;
 
@@ -20,6 +21,7 @@ public partial class GameManager : Node3D
   {
     base._PhysicsProcess(delta);
     OpponentBuffer.UpdateTargetPosition(PlayerCharacter.Position);
+    MainCamera.SetTargetGroundedInfo(PlayerCharacter.GetLastGroundedHeight(), PlayerCharacter.GetLastGroundedAngle());
   }
 
   public override void _ExitTree()

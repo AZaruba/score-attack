@@ -14,16 +14,17 @@ background_color = Color(0.13049997, 0.5372252, 0.87, 1)
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 
-[node name="GameRoot" type="Node3D" unique_id=572831494 node_paths=PackedStringArray("HeadsUpDisplay", "PlayerCharacter", "TestGoon", "OpponentBuffer")]
+[node name="GameRoot" type="Node3D" unique_id=572831494 node_paths=PackedStringArray("HeadsUpDisplay", "PlayerCharacter", "MainCamera", "TestGoon", "OpponentBuffer")]
 physics_interpolation_mode = 1
 script = ExtResource("1_j01n8")
 HeadsUpDisplay = NodePath("Hud")
 PlayerCharacter = NodePath("PlayerCharacter")
+MainCamera = NodePath("CharacterCamera")
 TestGoon = NodePath("Goon")
 OpponentBuffer = NodePath("OpponentBuffer")
 
 [node name="PlayerCharacter" parent="." unique_id=73598226 instance=ExtResource("2_okpsg")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, -22.23598)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=753730496]
 environment = SubResource("Environment_okpsg")

@@ -14,6 +14,7 @@ public partial class PlayerCharacterController : CharacterBody3D
   [Export] private StateMachineComponent StateComponent;
   [Export] private AnimatingBodyComponent AnimatingBodyComponent;
   [Export] private CharacterStats Stats;
+  [Export] private RayCast3D GroundPositionCast;
 
   // Signals
   [Signal] public delegate void OnPlayerHealthUpdateEventHandler(float newHealth);
@@ -21,6 +22,8 @@ public partial class PlayerCharacterController : CharacterBody3D
 
   // Local
   private Dictionary<StateID, Action<float>> StateActions;
+  private float LastGroundedHeight;
+  private float LastGroundedAngle;
 
   public override void _Ready()
   {
@@ -28,6 +31,9 @@ public partial class PlayerCharacterController : CharacterBody3D
     InitSignals();
     RotationComponent.SetAxis(Vector3.Up);
     HealthComponent.InitHealth(Stats.MaxHealth);
+    LastGroundedHeight = GlobalPosition.Y;
+    LastGroundedAngle = GetFloorAngle();
+    GetFloorNormal();
     EmitSignal(SignalName.OnPlayerMaxHealthUpdate, HealthComponent.GetMaxHealth());
     EmitSignal(SignalName.OnPlayerHealthUpdate, HealthComponent.GetMaxHealth());
   }
@@ -101,7 +107,20 @@ public partial class PlayerCharacterController : CharacterBody3D
   {
     if (IsOnFloor())
     {
+
+      if (GroundPositionCast.IsColliding())
+      {
+        LastGroundedAngle = GetFloorAngle();
+        LastGroundedHeight = GroundPositionCast.GetCollisionPoint().Y;
+      }
       StateComponent.RunCommand(Command.LAND);
+    }
+    else
+    {
+      if (GroundPositionCast.IsColliding() && Position.Y < LastGroundedHeight)
+      {
+        LastGroundedHeight = Position.Y;
+      }
     }
     if (InputComponent.GetJump())
     {
@@ -188,5 +207,16 @@ public partial class PlayerCharacterController : CharacterBody3D
       AnimatingBodyComponent.QueueAnimation();
     }
     MoveAndSlide();
+  }
+
+  // parent accessible
+  public float GetLastGroundedHeight()
+  {
+    return LastGroundedHeight;
+  }
+
+  public float GetLastGroundedAngle()
+  {
+    return LastGroundedAngle;
   }
 }

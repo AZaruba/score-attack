@@ -7,6 +7,7 @@ public partial class AnimatingBodyComponent : Node
   [Export] AnimationTree AnimationTreeComponent;
   [Export] AnimationPlayer AnimationPlayerComponent;
   [Export] bool AnimationTransitionReady;
+  [Export] bool IsInterruptable;
 
   [Signal] public delegate void OnCurrentAnimationFinishedEventHandler();
   public bool AnimationQueued;
