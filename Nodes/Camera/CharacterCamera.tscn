@@ -5,12 +5,16 @@
 [ext_resource type="PackedScene" uid="uid://cs8ovhje8kw8m" path="res://Nodes/Components/Velocity/VelocityComponent.tscn" id="3_o16he"]
 [ext_resource type="PackedScene" uid="uid://cn4aldc6nt85a" path="res://Nodes/Components/Rotation/RotationComponent.tscn" id="4_o16he"]
 
-[node name="Camera3D" type="Camera3D" unique_id=1180286763 node_paths=PackedStringArray("VelocityComponent", "RotationComponent")]
+[node name="Camera3D" type="Camera3D" unique_id=1180286763 node_paths=PackedStringArray("VelocityComponent", "RotationComponent", "HeightCast")]
 script = ExtResource("1_lgsoq")
 VelocityComponent = NodePath("VelocityComponent")
 RotationComponent = NodePath("RotationComponent")
+HeightCast = NodePath("RayCast3D")
 Stats = ExtResource("2_cpbnf")
 
 [node name="VelocityComponent" parent="." unique_id=600546887 instance=ExtResource("3_o16he")]
 
 [node name="RotationComponent" parent="." unique_id=1893574452 instance=ExtResource("4_o16he")]
+
+[node name="RayCast3D" type="RayCast3D" parent="." unique_id=1742676769]
+target_position = Vector3(0, -5, 0)

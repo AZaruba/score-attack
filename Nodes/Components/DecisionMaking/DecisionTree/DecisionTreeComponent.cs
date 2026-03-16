@@ -35,7 +35,7 @@ public partial class DecisionTreeComponent : Node
 
   public override void _PhysicsProcess(double delta)
   {
-    DebugLog.Log(Locked.ToString(), 1);
+    //
   }
 
   private void Unlock()

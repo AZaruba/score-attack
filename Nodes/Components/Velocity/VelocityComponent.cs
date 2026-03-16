@@ -38,5 +38,12 @@ public partial class VelocityComponent : Node
     CurrentVelocity = CurrentVelocity.LimitLength(Cap);
   }
 
+  public void CapVelocity(float XZCap, float YCap)
+  {
+    Vector3 VertVelocity = (Vector3.Up * CurrentVelocity.Y).LimitLength(YCap);
+    Vector3 HorizontalVelocity = new Vector3(CurrentVelocity.X, 0, CurrentVelocity.Z).LimitLength(XZCap);
+    CurrentVelocity = VertVelocity + HorizontalVelocity;
+  }
+
   public Vector3 GetCurrentVelocity() { return CurrentVelocity; }
 }
