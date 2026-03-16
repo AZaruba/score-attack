@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bx0rfw2fyp4fn"]
+
+[ext_resource type="Texture2D" uid="uid://cf6uqrk77wybd" path="res://Assets/3D/Environments/LabTestingArea/Export/BattleLobby_LabDarkMarbleAccent.png" id="1_28mbl"]
+
+[resource]
+resource_name = "WallAccent"
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_28mbl")
+texture_filter = 2

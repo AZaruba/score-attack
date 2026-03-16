@@ -25,6 +25,10 @@ window/stretch/mode="viewport"
 
 project/assembly_name="ScoreAttack"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/IVX_VertexColorImportSwapper/plugin.cfg")
+
 [input]
 
 MoveForward={
@@ -84,3 +88,4 @@ Jump={
 
 rendering_device/driver.windows="d3d12"
 textures/vram_compression/import_etc2_astc=true
+shading/overrides/force_vertex_shading=true

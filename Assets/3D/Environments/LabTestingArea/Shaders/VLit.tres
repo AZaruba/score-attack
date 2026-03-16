@@ -1,0 +1,50 @@
+[gd_resource type="VisualShader" format=3 uid="uid://dfo2p2koyaev6"]
+
+[sub_resource type="VisualShaderNodeColorFunc" id="VisualShaderNodeColorFunc_fwhks"]
+function = 5
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_08iw5"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(0, 0, 0, 0)]
+op_type = 2
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_fwhks"]
+constant = 10.0
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_l55ug"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(0, 0, 0, 0)]
+op_type = 2
+operator = 2
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_l55ug"]
+parameter_name = "Texture2DParameter"
+color_default = 2
+texture_filter = 1
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_08iw5"]
+expanded_output_ports = [0]
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_fwhks"]
+source = 5
+
+[resource]
+flags/unshaded = true
+flags/vertex_lighting = true
+nodes/vertex/0/position = Vector2(220, 120)
+nodes/fragment/0/position = Vector2(140, 320)
+nodes/fragment/5/node = SubResource("VisualShaderNodeTexture2DParameter_l55ug")
+nodes/fragment/5/position = Vector2(-1700, 860)
+nodes/fragment/6/node = SubResource("VisualShaderNodeInput_08iw5")
+nodes/fragment/6/position = Vector2(-1800, 540)
+nodes/fragment/7/node = SubResource("VisualShaderNodeTexture_fwhks")
+nodes/fragment/7/position = Vector2(-1240, 900)
+nodes/fragment/10/node = SubResource("VisualShaderNodeColorFunc_fwhks")
+nodes/fragment/10/position = Vector2(-780, 760)
+nodes/fragment/21/node = SubResource("VisualShaderNodeVectorOp_08iw5")
+nodes/fragment/21/position = Vector2(-720, 1120)
+nodes/fragment/22/node = SubResource("VisualShaderNodeFloatConstant_fwhks")
+nodes/fragment/22/position = Vector2(-960, 1200)
+nodes/fragment/23/node = SubResource("VisualShaderNodeVectorOp_l55ug")
+nodes/fragment/23/position = Vector2(-340, 600)
+nodes/fragment/connections = PackedInt32Array(5, 0, 7, 2, 22, 0, 21, 1, 7, 0, 10, 0, 23, 0, 0, 0, 6, 0, 21, 0, 10, 0, 23, 0, 21, 0, 23, 1)

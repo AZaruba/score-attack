@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cnyrtny05p61y"]
+
+[ext_resource type="Texture2D" uid="uid://bvxiyeq3wiop" path="res://Assets/3D/Environments/LabTestingArea/Export/BattleLobby_ShinyWoodWall.png" id="1_7eeqo"]
+
+[resource]
+resource_name = "WoodPanel"
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_7eeqo")
+texture_filter = 2
