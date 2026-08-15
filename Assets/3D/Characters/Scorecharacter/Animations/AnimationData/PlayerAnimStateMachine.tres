@@ -15,7 +15,7 @@ animation = &"MoveForward"
 animation = &"Standing"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_oxs03"]
-graph_offset = Vector2(-67.98068, -51.198368)
+graph_offset = Vector2(-254.30376, -39.41046)
 nodes/output/position = Vector2(760, 200)
 nodes/Stand/node = SubResource("AnimationNodeAnimation_lrqxm")
 nodes/Stand/position = Vector2(100, 280)
@@ -63,11 +63,11 @@ advance_mode = 2
 states/HitStun/node = SubResource("AnimationNodeAnimation_x77yj")
 states/HitStun/position = Vector2(454.82013, -28.345032)
 states/Idle/node = SubResource("AnimationNodeBlendTree_oxs03")
-states/Idle/position = Vector2(455, 92)
+states/Idle/position = Vector2(454.82013, 92)
 states/Punch/node = SubResource("AnimationNodeAnimation_30su3")
 states/Punch/position = Vector2(455, 214.25)
 states/Punch2/node = SubResource("AnimationNodeAnimation_8d486")
 states/Punch2/position = Vector2(600, 214.125)
 states/Start/position = Vector2(186, 109)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_8d486"), "Punch", "Punch2", SubResource("AnimationNodeStateMachineTransition_fkoxh"), "Punch", "Idle", SubResource("AnimationNodeStateMachineTransition_vm2mc"), "Idle", "Punch", SubResource("AnimationNodeStateMachineTransition_30su3"), "Punch2", "Idle", SubResource("AnimationNodeStateMachineTransition_xxnqp"), "Idle", "HitStun", SubResource("AnimationNodeStateMachineTransition_2yln0"), "HitStun", "Idle", SubResource("AnimationNodeStateMachineTransition_fbrmf")]
-graph_offset = Vector2(-30.85971, -80.34503)
+graph_offset = Vector2(60.14029, -108.34503)

@@ -12,7 +12,6 @@ public partial class ResourceBar : TextureRect
 
   public void SetResourceValue(float newValue)
   {
-    GD.Print(newValue);
     ResourceMat.SetShaderParameter("ResourceValue", newValue);
   }
 

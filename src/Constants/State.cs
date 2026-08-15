@@ -13,7 +13,8 @@ namespace StateManagement
     BLOCKING,
     HIT_BY_ATTACK,
     KNOCKED_DOWN,
-    JUGGLED,
+    KNOCKED_BACK,
+    LAUNCHED,
     APPROACHING,
     ORBITING,
     ENGAGING

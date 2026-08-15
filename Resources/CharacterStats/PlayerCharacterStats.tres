@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_qbcwl")
-MoveSpeed = 6.0
+MoveSpeed = 4.0
 MoveAcceleration = 2.0
 RotationRate = 120.0
 RotationAcceleration = 120.0

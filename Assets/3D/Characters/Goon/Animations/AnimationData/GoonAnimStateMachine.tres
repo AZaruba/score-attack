@@ -30,6 +30,12 @@ nodes/Forward/node = SubResource("AnimationNodeAnimation_ya2oq")
 nodes/Forward/position = Vector2(100, 460)
 node_connections = [&"output", 0, &"MoveBlend", &"MoveBlend", 0, &"Back", &"MoveBlend", 1, &"Stand", &"MoveBlend", 2, &"Forward"]
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hn8lx"]
+animation = &"KnockedBack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yen75"]
+animation = &"Launched"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_30su3"]
 animation = &"Punch"
 
@@ -61,16 +67,24 @@ advance_expression = "CurrentState == 3"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_guq8y"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5570v"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_phoj1"]
+
 [resource]
 allow_transition_to_self = true
 states/Block/node = SubResource("AnimationNodeAnimation_oxs03")
 states/Block/position = Vector2(589.7354, 92.93625)
 states/HitStun/node = SubResource("AnimationNodeAnimation_8n5r7")
-states/HitStun/position = Vector2(454.54968, -26.627502)
+states/HitStun/position = Vector2(589.7354, -38.127502)
 states/Idle/node = SubResource("AnimationNodeBlendTree_oxs03")
 states/Idle/position = Vector2(454.67603, 92)
+states/KnockedBack/node = SubResource("AnimationNodeAnimation_hn8lx")
+states/KnockedBack/position = Vector2(287.2354, -38.127502)
+states/Launched/node = SubResource("AnimationNodeAnimation_yen75")
+states/Launched/position = Vector2(313.2354, 214)
 states/Punch/node = SubResource("AnimationNodeAnimation_30su3")
-states/Punch/position = Vector2(455, 214)
+states/Punch/position = Vector2(589.7354, 209)
 states/Start/position = Vector2(186, 109)
-transitions = ["Punch", "Idle", SubResource("AnimationNodeStateMachineTransition_vm2mc"), "Idle", "Punch", SubResource("AnimationNodeStateMachineTransition_30su3"), "HitStun", "Idle", SubResource("AnimationNodeStateMachineTransition_3aoa2"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_8n5r7"), "Idle", "HitStun", SubResource("AnimationNodeStateMachineTransition_hn8lx"), "Idle", "Block", SubResource("AnimationNodeStateMachineTransition_yen75"), "Block", "Punch", SubResource("AnimationNodeStateMachineTransition_oxs03"), "HitStun", "Block", SubResource("AnimationNodeStateMachineTransition_0l4qi"), "Block", "Idle", SubResource("AnimationNodeStateMachineTransition_guq8y")]
+transitions = ["Punch", "Idle", SubResource("AnimationNodeStateMachineTransition_vm2mc"), "Idle", "Punch", SubResource("AnimationNodeStateMachineTransition_30su3"), "HitStun", "Idle", SubResource("AnimationNodeStateMachineTransition_3aoa2"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_8n5r7"), "Idle", "HitStun", SubResource("AnimationNodeStateMachineTransition_hn8lx"), "Idle", "Block", SubResource("AnimationNodeStateMachineTransition_yen75"), "Block", "Punch", SubResource("AnimationNodeStateMachineTransition_oxs03"), "HitStun", "Block", SubResource("AnimationNodeStateMachineTransition_0l4qi"), "Block", "Idle", SubResource("AnimationNodeStateMachineTransition_guq8y"), "Idle", "KnockedBack", SubResource("AnimationNodeStateMachineTransition_5570v"), "Idle", "Launched", SubResource("AnimationNodeStateMachineTransition_phoj1")]
 graph_offset = Vector2(69.2354, -92.1275)

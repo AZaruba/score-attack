@@ -2,6 +2,7 @@ using Godot;
 using StateManagement;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public partial class PlayerCharacterController : CharacterBody3D
 {
@@ -57,11 +58,12 @@ public partial class PlayerCharacterController : CharacterBody3D
   private void OnHitByAttack(Node3D AttackNode)
   {
     HealthComponent.Damage(10);
-    AnimatingBodyComponent.TravelTo("HitStun");
+    // TODO animate Julie and: AnimatingBodyComponent.TravelTo("HitStun");
   }
 
   private void OnCurrentAnimationFinished()
   {
+    // TODO: how to handle interrupted animations?
     StateComponent.RunCommand(Command.FINISH_ATTACK);
     AnimatingBodyComponent.ResetAnimationQueue();
   }
@@ -159,7 +161,18 @@ public partial class PlayerCharacterController : CharacterBody3D
 
     if (InputComponent.GetAttack())
     {
-      AnimatingBodyComponent.TravelTo("Punch");
+      if (InputComponent.GetAttackModifierBack())
+      {
+        AnimatingBodyComponent.TravelTo("Launcher");
+      } 
+      else if (InputComponent.GetAttackModifierForward())
+      {
+        AnimatingBodyComponent.TravelTo("Stinger");
+      } 
+      else
+      {
+        AnimatingBodyComponent.TravelTo("JabSolo");
+      }
     }
 
     // process Rotation
@@ -204,7 +217,18 @@ public partial class PlayerCharacterController : CharacterBody3D
     Velocity = Vector3.Zero;
     if (InputComponent.GetAttack())
     {
+      if (InputComponent.GetAttackModifierBack())
+      {
+        AnimatingBodyComponent.TravelTo("Launcher");
+      } 
+      else if (InputComponent.GetAttackModifierForward())
+      {
+        AnimatingBodyComponent.TravelTo("Stinger");
+      } 
+      else
+      {
       AnimatingBodyComponent.QueueAnimation();
+      }
     }
     MoveAndSlide();
   }
@@ -219,4 +243,5 @@ public partial class PlayerCharacterController : CharacterBody3D
   {
     return LastGroundedAngle;
   }
+
 }

@@ -10,9 +10,9 @@
 
 [sub_resource type="Environment" id="Environment_okpsg"]
 background_mode = 1
-background_color = Color(0.13049997, 0.5372252, 0.87, 1)
+background_color = Color(0.11280184, 0.51677644, 0.842562, 1)
 ambient_light_source = 2
-ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_color = Color(0.7581918, 0.7581918, 0.7581917, 1)
 
 [node name="GameRoot" type="Node3D" unique_id=572831494 node_paths=PackedStringArray("HeadsUpDisplay", "PlayerCharacter", "MainCamera", "TestGoon", "OpponentBuffer")]
 physics_interpolation_mode = 1

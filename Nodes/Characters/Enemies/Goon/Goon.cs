@@ -30,6 +30,9 @@ public partial class Goon : IOpponent
   private bool IsMovingToLink = false;
   private bool Arrived = false;
 
+  private bool Launched = false;
+  private bool KnockedBack = false;
+
   public override void _Ready()
   {;
     HealthComponent.InitHealth(Stats.MaxHealth);
@@ -55,11 +58,15 @@ public partial class Goon : IOpponent
       { StateID.ENGAGING, EngagingState },
       { StateID.ATTACKING, AttackingState },
       { StateID.HIT_BY_ATTACK, HitRecoveryState },
-      { StateID.BLOCKING, BlockingState }
+      { StateID.BLOCKING, BlockingState },
+      { StateID.KNOCKED_BACK, KnockbackState },
+      { StateID.LAUNCHED, LaunchedState }
     };
 
     // Decision Tree version
     DecisionTreeComponent.AddBranch(DecisionID.TARGET_IS_NOTICED);
+    DecisionTreeComponent.AddBranch(DecisionID.KNOCKED_BACK);
+    DecisionTreeComponent.AddBranch(DecisionID.LAUNCHED);
     DecisionTreeComponent.AddBranch(DecisionID.IDLE); // currently will never get here
     DecisionTreeComponent.AddBranch(DecisionID.TARGET_IN_RANGE, DecisionID.TARGET_IS_NOTICED);
     DecisionTreeComponent.AddBranch(DecisionID.TARGET_NOT_IN_RANGE, DecisionID.TARGET_IS_NOTICED);
@@ -73,10 +80,12 @@ public partial class Goon : IOpponent
     DecisionTreeComponent.AddStateLeaf(StateID.ORBITING, DecisionID.WANT_TO_ORBIT);
     DecisionTreeComponent.AddStateLeaf(StateID.ATTACKING, DecisionID.WANT_TO_ATTACK);
     DecisionTreeComponent.AddStateLeaf(StateID.ENGAGING, DecisionID.WANT_TO_CLOSE_IN);
+    DecisionTreeComponent.AddStateLeaf(StateID.KNOCKED_BACK, DecisionID.KNOCKED_BACK);
+    DecisionTreeComponent.AddStateLeaf(StateID.LAUNCHED, DecisionID.LAUNCHED);
 
-    DecisionTreeComponent.SetLeafTimer(2f, DecisionID.WANT_TO_ATTACK);
+    //DecisionTreeComponent.SetLeafTimer(2f, DecisionID.WANT_TO_ATTACK);
 
-    DecisionTreeComponent.SetBehavior(IsTargetNoticed, DecisionID.ROOT);
+    DecisionTreeComponent.SetBehavior(NoticeIfNotStunned, DecisionID.ROOT);
     DecisionTreeComponent.SetBehavior(IsTargetInRange, DecisionID.TARGET_IS_NOTICED);
     DecisionTreeComponent.SetBehavior(IsReadyToEngage, DecisionID.TARGET_IN_RANGE);
     DecisionTreeComponent.SetBehavior(SelectEngageAction, DecisionID.WANT_TO_ENGAGE);
@@ -84,8 +93,26 @@ public partial class Goon : IOpponent
 
   }
 
-  public DecisionID IsTargetNoticed()
+  public DecisionID NoticeIfNotStunned()
   {
+    if (Launched)
+    {
+      if (IsOnFloor() && GravityComponent.GetVerticalVelocity().Y <= 0)
+      {
+        AnimatingBodyComponent.TravelTo("Idle");
+        Launched = false;
+      }
+      return DecisionID.LAUNCHED;
+    }
+    else if (KnockedBack)
+    {
+      if (IsOnWall())
+      {
+        AnimatingBodyComponent.TravelTo("Idle");
+        KnockedBack = false;
+      }
+      return DecisionID.KNOCKED_BACK;
+    }
     return DecisionID.TARGET_IS_NOTICED;
   }
 
@@ -141,7 +168,7 @@ public partial class Goon : IOpponent
     LastDecisionState = DecisionTreeComponent.MakeDecision();
     RunStateMachineFunction(StateActions[LastDecisionState], (float)delta);
     // UpdateStateMachine();
-    //DebugLog.Log(LastDecisionState.ToString(), 1);
+    DebugLog.Log(LastDecisionState.ToString(), 1);
   }
 
   private void OnLinkReached(Godot.Collections.Dictionary details)
@@ -156,19 +183,38 @@ public partial class Goon : IOpponent
     Arrived = true;
   }
 
-  private void OnHitByAttack(Node3D AttackNode)
+  private void OnHitByAttack(AttackPropertiesContainer AttackNode)
   {
+    // TODO: Different enemies have different launch/knockback resistance
+    if (AttackNode.IsLauncher())
+    {
+      AnimatingBodyComponent.TravelTo("Launched");
+      Launched = true;
+    }
+    if (AttackNode.GetKnockbackForce() > 0.5f)
+    {
+      AnimatingBodyComponent.TravelTo("KnockedBack");
+      VelocityComponent.SetVelocity(Basis.Z * -1 * AttackNode.GetKnockbackForce());
+      KnockedBack = true;
+      Launched = false;
+    }
+    else if (!Launched)
+    {
+      AnimatingBodyComponent.TravelTo("HitStun");
+    }
     //DebugLog.LogTemp("Got Hit", 2);
     // TODO: investigate simply setting a flag for "eligible for hit"
     if (LastDecisionState != StateID.BLOCKING)
     {
-      HealthComponent.Damage(10);
+      HealthComponent.Damage(AttackNode.GetAttackPotency());
       HealthBar.RevealHealthBar();
       HealthBar.SetResourceValue(HealthComponent.GetCurrentHealth());
-      AnimatingBodyComponent.TravelTo("HitStun");
     }
-    AttackAccumulationComponent.AddDamage(10);
-    //StateComponent.RunCommand(Command.GET_HIT);
+    if (Launched)
+    {
+      GravityComponent.ApplyVerticalForce(AttackNode.GetLauncherForce());
+    }
+    AttackAccumulationComponent.AddDamage(AttackNode.GetAttackPotency());
   }
 
   private void OnCurrentAnimationFinished()
@@ -234,7 +280,8 @@ public partial class Goon : IOpponent
     AnimatingBodyComponent.SetAnimationParameter(PCAnimationNames.MoveBlendPath, VelocityComponent.GetCurrentVelocity().Length() / Stats.MoveSpeed);
     
     VelocityComponent.CapVelocity(Stats.MoveSpeed);
-    Velocity = VelocityComponent.GetCurrentVelocity() + GravityComponent.GetVerticalVelocity();
+    Velocity = GravityComponent.GetVerticalVelocity();
+    if (IsOnFloor()) Velocity += VelocityComponent.GetCurrentVelocity();
     MoveAndSlide();
   }
 
@@ -326,5 +373,18 @@ public partial class Goon : IOpponent
     
   }
 
+  private void KnockbackState(float delta)
+  {
+    Velocity = VelocityComponent.GetCurrentVelocity();
+    DebugLog.Log(VelocityComponent.GetCurrentVelocity().ToString(), 2);
+    MoveAndSlide();
+  }
 
+  private void LaunchedState(float delta)
+  {
+    GravityComponent.AddGravity(Stats.Gravity * delta, false);
+    DebugLog.Log(GravityComponent.GetVerticalVelocity().ToString(), 2);
+    Velocity = GravityComponent.GetVerticalVelocity();
+    MoveAndSlide();
+  }
 }

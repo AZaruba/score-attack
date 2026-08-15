@@ -30,8 +30,8 @@ public partial class CharacterCamera : Camera3D
     float YValue = FlatTargetPosition.Y;
 
     float Hypotenuse = Position.DistanceTo(FlatTargetPosition);
-    DebugLog.Log((Mathf.Sin(TargetGroundedAngle) * Hypotenuse).ToString(), 0);
-    DebugLog.Log((Mathf.Sin(TargetGroundedAngle) * Hypotenuse).ToString(), 1);
+    // DebugLog.Log((Mathf.Sin(TargetGroundedAngle) * Hypotenuse).ToString(), 0);
+    // DebugLog.Log((Mathf.Sin(TargetGroundedAngle) * Hypotenuse).ToString(), 1);
 
     if (HeightCast.IsColliding() && Mathf.Sin(TargetGroundedAngle) * Hypotenuse > HeightCast.GetCollisionPoint().Y - TargetGroundedHeight)
     {

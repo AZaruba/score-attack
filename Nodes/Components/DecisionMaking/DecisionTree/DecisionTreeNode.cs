@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using Godot;
 
 public enum DecisionID
 {
@@ -20,7 +21,9 @@ public enum DecisionID
   WANT_TO_COUNTER,
   WANT_TO_ENTER_VIEW,
   WANT_TO_ATTACK,
-  PICK_ATTACK
+  PICK_ATTACK,
+  LAUNCHED,
+  KNOCKED_BACK
 }
 
 public class DecisionTreeNode<T>

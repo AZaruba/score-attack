@@ -12,7 +12,6 @@ public partial class WorldResourceBar : Node3D
 
   public void SetResourceValue(float newValue)
   {
-    GD.Print(newValue);
     ResourceMat.SetShaderParameter("ResourceValue", newValue);
   }
 

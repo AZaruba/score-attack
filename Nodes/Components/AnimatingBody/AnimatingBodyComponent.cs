@@ -7,8 +7,9 @@ public partial class AnimatingBodyComponent : Node
   [Export] AnimationTree AnimationTreeComponent;
   [Export] AnimationPlayer AnimationPlayerComponent;
   [Export] bool AnimationTransitionReady;
+  [Export] bool AnimationQueueReady;
   [Export] bool IsInterruptable;
-
+  [Export] string CurrentPlayingAnimation;
   [Signal] public delegate void OnCurrentAnimationFinishedEventHandler();
   public bool AnimationQueued;
 
@@ -27,6 +28,7 @@ public partial class AnimatingBodyComponent : Node
 
   public override void _PhysicsProcess(double delta)
   {
+    
   }
 
   public void PlayAnimationLoop(string AnimationName)
@@ -53,7 +55,7 @@ public partial class AnimatingBodyComponent : Node
   // should allow for cancelable animation override?
   public void QueueAnimation()
   {
-    if (AnimationTransitionReady)
+    if (AnimationQueueReady)
     {
       AnimationQueued = true;
     }
@@ -70,6 +72,13 @@ public partial class AnimatingBodyComponent : Node
     animSM.Travel(stateName);
   }
 
+  private void OnAnimationStarted(StringName AnimationName)
+  {
+    // conditional calling of this may be necessary
+    AnimationQueued = false;
+    AnimationTransitionReady = false;
+    CurrentPlayingAnimation = AnimationName;
+  }
   private void OnAnimationFinished(StringName AnimationName)
   {
     EmitSignal(SignalName.OnCurrentAnimationFinished);

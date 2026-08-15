@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cn4aldc6nt85a" path="res://Nodes/Components/Rotation/RotationComponent.tscn" id="6_lp7xk"]
 [ext_resource type="PackedScene" uid="uid://cksgfveucfj1w" path="res://Nodes/Components/Health/HealthComponent.tscn" id="7_bhiar"]
 [ext_resource type="PackedScene" uid="uid://cfkd85rouw0ll" path="res://Nodes/Components/StateMachine/StateMachineComponent.tscn" id="8_50f7y"]
-[ext_resource type="PackedScene" uid="uid://ci5hvlkkqrvdf" path="res://Assets/3D/Characters/Scorecharacter/DemoChar.tscn" id="9_jwjeh"]
+[ext_resource type="PackedScene" uid="uid://bpl3nwd4lgfva" path="res://Assets/3D/Characters/Protag/Julie.tscn" id="9_jwjeh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lc4lg"]
 
@@ -25,7 +25,7 @@ RotationComponent = NodePath("RotationComponent")
 GravityComponent = NodePath("GravityComponent")
 HealthComponent = NodePath("HealthComponent")
 StateComponent = NodePath("StateMachineComponent")
-AnimatingBodyComponent = NodePath("DemoChar")
+AnimatingBodyComponent = NodePath("Julie")
 Stats = ExtResource("2_wfsgo")
 GroundPositionCast = NodePath("RayCast3D")
 
@@ -46,8 +46,6 @@ Gravity = 9.8
 
 [node name="StateMachineComponent" parent="." unique_id=998481345 instance=ExtResource("8_50f7y")]
 
-[node name="DemoChar" parent="." unique_id=476416424 instance=ExtResource("9_jwjeh")]
-
 [node name="HurtArea" type="Area3D" parent="." unique_id=1616964325]
 collision_layer = 128
 collision_mask = 64
@@ -60,5 +58,7 @@ debug_color = Color(0.81965595, 0.0018179948, 0.9683787, 0.41960785)
 [node name="RayCast3D" type="RayCast3D" parent="." unique_id=102919385]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 target_position = Vector3(0, -3, 0)
+
+[node name="Julie" parent="." unique_id=588787790 instance=ExtResource("9_jwjeh")]
 
 [connection signal="area_entered" from="HurtArea" to="." method="OnHitByAttack"]
