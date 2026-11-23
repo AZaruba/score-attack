@@ -61,10 +61,12 @@ public partial class PlayerCharacterController : CharacterBody3D
     // TODO animate Julie and: AnimatingBodyComponent.TravelTo("HitStun");
   }
 
-  private void OnCurrentAnimationFinished()
+  private void OnCurrentAnimationFinished(StringName animationName)
   {
+    GD.Print(animationName);
     // TODO: how to handle interrupted animations?
     StateComponent.RunCommand(Command.FINISH_ATTACK);
+    StateComponent.RunCommand(Command.FINISH_DODGE);
     AnimatingBodyComponent.ResetAnimationQueue();
   }
 
@@ -74,14 +76,18 @@ public partial class PlayerCharacterController : CharacterBody3D
     {
       { StateID.GROUNDED, NormalState },
       { StateID.JUMPING, JumpingState },
-      { StateID.ATTACKING, AttackingState }
+      { StateID.ATTACKING, AttackingState },
+      { StateID.DODGING, DodgeState }
     };
     StateComponent.AddState(StateID.GROUNDED);
     StateComponent.AddState(StateID.JUMPING);
     StateComponent.AddState(StateID.ATTACKING);
+    StateComponent.AddState(StateID.DODGING);
     StateComponent.AddTransitionToState(StateID.GROUNDED, Command.JUMP, StateID.JUMPING);
+    StateComponent.AddTransitionToState(StateID.GROUNDED, Command.DODGE, StateID.DODGING);
     StateComponent.AddTransitionToState(StateID.GROUNDED, Command.START_ATTACK, StateID.ATTACKING);
     StateComponent.AddTransitionToState(StateID.ATTACKING, Command.FINISH_ATTACK, StateID.GROUNDED);
+    StateComponent.AddTransitionToState(StateID.DODGING, Command.FINISH_DODGE, StateID.GROUNDED);
     StateComponent.AddTransitionToState(StateID.JUMPING, Command.LAND, StateID.GROUNDED);
     StateComponent.Enter(StateID.GROUNDED);
   }
@@ -132,6 +138,10 @@ public partial class PlayerCharacterController : CharacterBody3D
     {
       StateComponent.RunCommand(Command.START_ATTACK);
     }
+    if (InputComponent.GetDodge())
+    {
+      StateComponent.RunCommand(Command.DODGE);
+    }
     AnimatingBodyComponent.SetCurrentState(StateComponent.GetCurrentState());
   }
 
@@ -175,6 +185,13 @@ public partial class PlayerCharacterController : CharacterBody3D
       }
     }
 
+    if (InputComponent.GetDodge())
+    {
+      int RandomDodge = GD.RandRange(-1, 1);
+      AnimatingBodyComponent.SetAnimationParameter(PCAnimationNames.DodgeBlendPath, RandomDodge);
+      AnimatingBodyComponent.TravelTo("DodgeTree");
+    }
+
     // process Rotation
     float RotationInput = Mathf.DegToRad(Stats.RotationAcceleration) * InputComponent.GetStrafeInput() * -1;
     RotationComponent.AddRotationForce(RotationInput);
@@ -188,6 +205,16 @@ public partial class PlayerCharacterController : CharacterBody3D
     VelocityComponent.CapVelocity(Stats.MoveSpeed * Mathf.Abs(InputComponent.GetMoveInput()));
     Velocity = VelocityComponent.GetCurrentVelocity() + GravityComponent.GetVerticalVelocity();
     MoveAndSlide();
+  }
+
+  public void DodgeState(float delta)
+  {
+    if (InputComponent.GetDodge() && AnimatingBodyComponent.Interruptable())
+    {
+      int RandomDodge = GD.RandRange(-1, 1);
+      AnimatingBodyComponent.SetAnimationParameter(PCAnimationNames.DodgeBlendPath, RandomDodge);
+      AnimatingBodyComponent.TravelTo("DodgeTree");
+    }
   }
 
   public void JumpingState(float delta)
@@ -217,17 +244,17 @@ public partial class PlayerCharacterController : CharacterBody3D
     Velocity = Vector3.Zero;
     if (InputComponent.GetAttack())
     {
-      if (InputComponent.GetAttackModifierBack())
+      if (InputComponent.GetAttackModifierBack() && AnimatingBodyComponent.QueueReady())
       {
         AnimatingBodyComponent.TravelTo("Launcher");
       } 
-      else if (InputComponent.GetAttackModifierForward())
+      else if (InputComponent.GetAttackModifierForward() && AnimatingBodyComponent.QueueReady())
       {
         AnimatingBodyComponent.TravelTo("Stinger");
       } 
       else
       {
-      AnimatingBodyComponent.QueueAnimation();
+        AnimatingBodyComponent.QueueAnimation();
       }
     }
     MoveAndSlide();

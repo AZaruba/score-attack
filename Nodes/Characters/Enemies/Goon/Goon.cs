@@ -217,7 +217,7 @@ public partial class Goon : IOpponent
     AttackAccumulationComponent.AddDamage(AttackNode.GetAttackPotency());
   }
 
-  private void OnCurrentAnimationFinished()
+  private void OnCurrentAnimationFinished(StringName animationName)
   {
     // TODO: make this smarter
     // StateComponent.RunCommand(Command.RECOVER_FROM_HIT);

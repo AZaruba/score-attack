@@ -9,6 +9,7 @@ public partial class InputComponent : Node
   private float TimeAttackPressed;
   private bool JumpInput;
   private bool AttackInput;
+  private bool DodgeInput;
   private bool AttackModifierBack;
   private bool AttackModifierForward;
   public override void _Ready()
@@ -22,6 +23,7 @@ public partial class InputComponent : Node
     StrafeInput = Input.GetAxis(InputAction.MoveLeft, InputAction.MoveRight);
     JumpInput = Input.IsActionJustPressed(InputAction.Jump);
     AttackInput = Input.IsActionJustPressed(InputAction.Attack);
+    DodgeInput = Input.IsActionJustPressed(InputAction.Dodge);
     AttackModifierBack = Input.IsActionPressed(InputAction.AttackModifierBack);
     AttackModifierForward = Input.IsActionPressed(InputAction.AttackModifierForward);
 
@@ -50,6 +52,7 @@ public partial class InputComponent : Node
   public float GetAttackHoldTime() { return TimeAttackPressed; }
   public bool GetJump() { return JumpInput; }
   public bool GetAttack() { return AttackInput; }
+  public bool GetDodge() { return DodgeInput; }
 
   public bool GetAttackModifierBack() { return AttackModifierBack; }
   public bool GetAttackModifierForward() { return AttackModifierForward; }

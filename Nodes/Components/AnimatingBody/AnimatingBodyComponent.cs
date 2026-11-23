@@ -10,7 +10,7 @@ public partial class AnimatingBodyComponent : Node
   [Export] bool AnimationQueueReady;
   [Export] bool IsInterruptable;
   [Export] string CurrentPlayingAnimation;
-  [Signal] public delegate void OnCurrentAnimationFinishedEventHandler();
+  [Signal] public delegate void OnCurrentAnimationFinishedEventHandler(StringName animationName);
   public bool AnimationQueued;
 
   private bool IsPlayingLockedAnimation;
@@ -61,6 +61,11 @@ public partial class AnimatingBodyComponent : Node
     }
   }
 
+  public bool QueueReady()
+  {
+    return AnimationQueueReady;
+  }
+
   public void ResetAnimationQueue()
   {
     AnimationQueued = false;
@@ -72,6 +77,11 @@ public partial class AnimatingBodyComponent : Node
     animSM.Travel(stateName);
   }
 
+  public bool Interruptable()
+  {
+    return IsInterruptable;
+  }
+
   private void OnAnimationStarted(StringName AnimationName)
   {
     // conditional calling of this may be necessary
@@ -81,6 +91,6 @@ public partial class AnimatingBodyComponent : Node
   }
   private void OnAnimationFinished(StringName AnimationName)
   {
-    EmitSignal(SignalName.OnCurrentAnimationFinished);
+    EmitSignal(SignalName.OnCurrentAnimationFinished, AnimationName);
   }
 }
