@@ -94,10 +94,12 @@ advance_mode = 2
 advance_expression = "CurrentState == 1"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ckhqr"]
+xfade_time = 0.05
 advance_mode = 2
 advance_expression = "AnimationQueued && AnimationTransitionReady && CurrentPlayingAnimation == \"JabPlus\""
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dbakp"]
+xfade_time = 0.05
 advance_mode = 2
 advance_expression = "AnimationQueued && AnimationTransitionReady && CurrentPlayingAnimation == \"Hook\""
 
@@ -131,6 +133,7 @@ break_loop_at_end = true
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_12err"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2ap3x"]
+xfade_time = 0.05
 advance_mode = 2
 advance_expression = "AnimationQueued && AnimationTransitionReady && CurrentPlayingAnimation == \"JabSolo\"
 "
@@ -162,4 +165,4 @@ states/Stinger/position = Vector2(482, -101)
 states/Taunt/node = SubResource("AnimationNodeAnimation_2ap3x")
 states/Taunt/position = Vector2(624, -101)
 transitions = ["Kick", "Idle", SubResource("AnimationNodeStateMachineTransition_xcrr7"), "Idle", "JabSolo", SubResource("AnimationNodeStateMachineTransition_mtqbq"), "JabSolo", "Idle", SubResource("AnimationNodeStateMachineTransition_hujcj"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_y0miq"), "JabPlus", "Idle", SubResource("AnimationNodeStateMachineTransition_42pic"), "JabPlus", "Kick", SubResource("AnimationNodeStateMachineTransition_ckhqr"), "Hook", "JabPlus", SubResource("AnimationNodeStateMachineTransition_dbakp"), "Hook", "Idle", SubResource("AnimationNodeStateMachineTransition_13io2"), "Stinger", "Idle", SubResource("AnimationNodeStateMachineTransition_e04bx"), "Taunt", "Idle", SubResource("AnimationNodeStateMachineTransition_mjup1"), "Launcher", "Idle", SubResource("AnimationNodeStateMachineTransition_mvjpd"), "Idle", "Taunt", SubResource("AnimationNodeStateMachineTransition_lyx1g"), "Idle", "Stinger", SubResource("AnimationNodeStateMachineTransition_tcfrb"), "Idle", "Launcher", SubResource("AnimationNodeStateMachineTransition_12err"), "JabSolo", "Hook", SubResource("AnimationNodeStateMachineTransition_2ap3x"), "Idle", "DodgeTree", SubResource("AnimationNodeStateMachineTransition_mclyx"), "DodgeTree", "Idle", SubResource("AnimationNodeStateMachineTransition_g7onk")]
-graph_offset = Vector2(117, -144)
+graph_offset = Vector2(26, -115)

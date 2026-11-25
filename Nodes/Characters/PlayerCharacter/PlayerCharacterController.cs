@@ -87,7 +87,9 @@ public partial class PlayerCharacterController : CharacterBody3D
     StateComponent.AddTransitionToState(StateID.GROUNDED, Command.DODGE, StateID.DODGING);
     StateComponent.AddTransitionToState(StateID.GROUNDED, Command.START_ATTACK, StateID.ATTACKING);
     StateComponent.AddTransitionToState(StateID.ATTACKING, Command.FINISH_ATTACK, StateID.GROUNDED);
+    StateComponent.AddTransitionToState(StateID.ATTACKING, Command.DODGE, StateID.DODGING);
     StateComponent.AddTransitionToState(StateID.DODGING, Command.FINISH_DODGE, StateID.GROUNDED);
+    StateComponent.AddTransitionToState(StateID.DODGING, Command.START_ATTACK, StateID.ATTACKING);
     StateComponent.AddTransitionToState(StateID.JUMPING, Command.LAND, StateID.GROUNDED);
     StateComponent.Enter(StateID.GROUNDED);
   }
@@ -171,18 +173,7 @@ public partial class PlayerCharacterController : CharacterBody3D
 
     if (InputComponent.GetAttack())
     {
-      if (InputComponent.GetAttackModifierBack())
-      {
-        AnimatingBodyComponent.TravelTo("Launcher");
-      } 
-      else if (InputComponent.GetAttackModifierForward())
-      {
-        AnimatingBodyComponent.TravelTo("Stinger");
-      } 
-      else
-      {
-        AnimatingBodyComponent.TravelTo("JabSolo");
-      }
+      PickAttack();
     }
 
     if (InputComponent.GetDodge())
@@ -214,6 +205,11 @@ public partial class PlayerCharacterController : CharacterBody3D
       int RandomDodge = GD.RandRange(-1, 1);
       AnimatingBodyComponent.SetAnimationParameter(PCAnimationNames.DodgeBlendPath, RandomDodge);
       AnimatingBodyComponent.TravelTo("DodgeTree");
+    }
+
+    if (InputComponent.GetAttack() && AnimatingBodyComponent.Interruptable())
+    {
+      PickAttack();
     }
   }
 
@@ -257,6 +253,12 @@ public partial class PlayerCharacterController : CharacterBody3D
         AnimatingBodyComponent.QueueAnimation();
       }
     }
+    if (InputComponent.GetDodge())
+    {
+      int RandomDodge = GD.RandRange(-1, 1);
+      AnimatingBodyComponent.SetAnimationParameter(PCAnimationNames.DodgeBlendPath, RandomDodge);
+      AnimatingBodyComponent.CancelThenTravelTo("DodgeTree");
+    }
     MoveAndSlide();
   }
 
@@ -271,4 +273,19 @@ public partial class PlayerCharacterController : CharacterBody3D
     return LastGroundedAngle;
   }
 
+  private void PickAttack()
+  {
+    if (InputComponent.GetAttackModifierBack())
+    {
+      AnimatingBodyComponent.TravelTo("Launcher");
+    } 
+    else if (InputComponent.GetAttackModifierForward())
+    {
+      AnimatingBodyComponent.TravelTo("Stinger");
+    } 
+    else
+    {
+      AnimatingBodyComponent.TravelTo("JabSolo");
+    }
+  }
 }

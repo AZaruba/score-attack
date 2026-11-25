@@ -77,6 +77,12 @@ public partial class AnimatingBodyComponent : Node
     animSM.Travel(stateName);
   }
 
+  public void CancelThenTravelTo(string stateName)
+  {
+    AnimationNodeStateMachinePlayback animSM = (AnimationNodeStateMachinePlayback)(GodotObject)AnimationTreeComponent.Get("parameters/playback");
+    animSM.Start(stateName);
+  }
+
   public bool Interruptable()
   {
     return IsInterruptable;
